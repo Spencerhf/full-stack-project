@@ -308,9 +308,6 @@ app.get('/forums/:forum/topics/:topic/posts/:post/replies/:reply', (req,res) => 
 
 
 
-
-
-
 //Start localhost 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`)
