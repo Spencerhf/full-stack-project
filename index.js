@@ -7,6 +7,8 @@ const initOptions = {
     promiseLib: promise,
 };
 
+const saltRounds = 10;
+
 const config = {
     host: 'localhost',
     port: 5432,
@@ -20,3 +22,14 @@ const db = require("./models");
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(express.static( __dirname + '/web'));
+
+bcrypt.hash(password,saltRounds, function(err,hash){
+    db.user.create({"username": username, "email": email,"password": hash})
+    .then(function (user) {
+        resizeBy.json({status: "Successful Registration"});
+    });
+})
+
+app.listen(portNumber, function() {
+    console.log(`My API is listening on port ${portNumber}......`);
+});
