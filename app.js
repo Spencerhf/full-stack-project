@@ -62,7 +62,7 @@ app.post('/register', (req, res) => {
     var email = req.body.email;
     var password = req.body.password;
     bcrypt.hash(password, saltRounds, function(err, hash) {
-        let password = hash;
+        var password = hash;
         console.log(password)
         })
     db.query(
@@ -309,9 +309,6 @@ app.get('/forums/:forum/topics/:topic/posts/:post/replies/:reply', (req,res) => 
         res.status(404).send("That reply does not exist.")
     });
 });
-
-
-
 
 
 
