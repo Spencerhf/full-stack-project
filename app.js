@@ -62,7 +62,7 @@ app.post('/register', (req, res) => {
     var email = req.body.email;
     var password = req.body.password;
     bcrypt.hash(password, saltRounds, function(err, hash) {
-        let password = hash;
+        var password = hash;
         console.log(password)
         })
     db.query(
@@ -84,25 +84,29 @@ app.post('/register', (req, res) => {
 app.post('/login', (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
+    db.query(`SELECT * FROM users\
+    WHERE username = '${username}'`)
+    .then (function (results) {
     if(!username) {
         res.status(404).send("Username is required");
     }
     if(!password) {
         res.status(404).send("Password is required");
     }
-    if(!users[username]) {
-        res.status(404).send("No account with that username exists.");
-    }
-    var stored_password = users[password];
+    var stored_password = results[0].password;
     console.log(stored_password);
     bcrypt.compare(password, stored_password, function(err, result) {
         if(result == true) {
             res.json({status : "User has successfully logged in"});
         } else {
-            res.status(404).send("Email/Password combination did not match");
+            res.status(409).send("Incorrect password");
         }
-    });
-})
+        })
+    })
+    .catch(e => {
+        res.status(409).send("Email/Password combination did not match")
+        });
+    })
 
 
 //Create Topic
