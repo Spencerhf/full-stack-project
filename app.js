@@ -62,13 +62,13 @@ app.post('/register', (req, res) => {
     var email = req.body.email;
     var password = req.body.password;
     bcrypt.hash(password, saltRounds, function(err, hash) {
-        var password = hash;
+        var hash = hash;
         console.log(password)
         })
     db.query(
         `INSERT INTO users (first_name,last_name,username,email,password,date_registered)\
         VALUES\ 
-        ('${first_name}','${last_name}','${username}','${email}','${password}',CURRENT_TIMESTAMP)\
+        ('${first_name}','${last_name}','${username}','${email}','${hash}',CURRENT_TIMESTAMP)\
         RETURNING *`)
     .then (function(results) {
         res.json("User succesfully registered.")
@@ -96,7 +96,7 @@ app.post('/login', (req, res) => {
     var stored_password = results[0].password;
     console.log(stored_password);
     bcrypt.compare(password, stored_password, function(err, result) {
-        if(result == true) {
+        if(result) {
             res.json({status : "User has successfully logged in"});
         } else {
             res.status(409).send("Incorrect password");
