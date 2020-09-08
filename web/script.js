@@ -20,7 +20,7 @@ $( document ).ready(function() {
                    password.value == '' || password.value == undefined) {
                     alert('Please fill out all fields');
                 } else {
-                    $.post('http://localhost:3000/api/login', {
+                    $.post('http://localhost:3000/login', {
                         
                         "username": `${username.value}`,
                         "password": `${password.value}`
@@ -47,7 +47,7 @@ $( document ).ready(function() {
                    lastName.value == '' || lastName.value == undefined ) {
                     alert('Please fill out all fields');
                 } else {
-                    $.post('http://localhost:3000/api/register', {
+                    $.post('http://localhost:3000/register', {
 
                         "email": `${email.value}`,
                         "username": `${username.value}`,
