@@ -66,9 +66,9 @@ app.post('/register', (req, res) => {
         console.log(password)
         })
     db.query(
-        `INSERT INTO users (first_name,last_name,username,email,password,date_registered)\
+        `INSERT INTO users (first_name,last_name,username,email,password)\
         VALUES\ 
-        ('${first_name}','${last_name}','${username}','${email}','${password}',CURRENT_TIMESTAMP)\
+        ('${first_name}','${last_name}','${username}','${email}','${password}')\
         RETURNING *`)
     .then (function(results) {
         res.json("User succesfully registered.")
@@ -81,33 +81,28 @@ app.post('/register', (req, res) => {
 
 //Login User
 
-app.post('/login', function( req, res ) {
-    if(!req.body.username) {
-        res.status(404).send('Please enter username');
-    }
-
-    if(!req.body.password) {
-       res.status(404).send('Please enter password');
-    }
-
+app.post('/login', (req, res) => {
     let username = req.body.username;
-    let enteredPassword = req.body.password;
-    
-    db.query(`SELECT * FROM users WHERE username = '${username}'`).then(function(users) {
-        let password = users[0].password;
-        console.log(password);
-        bcrypt.compare(enteredPassword, password, function(err, result) {
-            if(result == true) {
-                res.send('Logged in').end();
-                console.log('Logged in');
-            } else {
-                res.status(404).send("Password or username incorrect").end();
-            }
-        })
-    }) .catch(e => {
-        res.status(409).send("Email/Password combination did not match")
+    let password = req.body.password;
+    if(!username) {
+        res.status(404).send("Username is required");
+    }
+    if(!password) {
+        res.status(404).send("Password is required");
+    }
+    if(!users[username]) {
+        res.status(404).send("No account with that username exists.");
+    }
+    var stored_password = users[password];
+    console.log(stored_password);
+    bcrypt.compare(password, stored_password, function(err, result) {
+        if(result == true) {
+            res.json({status : "User has successfully logged in"});
+        } else {
+            res.status(404).send("Email/Password combination did not match");
+        }
     });
-});
+})
 
 
 //Create Topic
