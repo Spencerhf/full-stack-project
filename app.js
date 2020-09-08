@@ -62,20 +62,19 @@ app.post('/register', (req, res) => {
     var email = req.body.email;
     var password = req.body.password;
     bcrypt.hash(password, saltRounds, function(err, hash) {
-        var hash = hash;
-        console.log(password)
-        })
-    db.query(
-        `INSERT INTO users (first_name,last_name,username,email,password,date_registered)\
-        VALUES\ 
-        ('${first_name}','${last_name}','${username}','${email}','${hash}',CURRENT_TIMESTAMP)\
-        RETURNING *`)
-    .then (function(results) {
-        res.json("User succesfully registered.")
-    })
-    .catch(e => {
-        res.status(409).send("Username or email already taken.")
-    });
+        var encrypted_password = hash;
+        db.query(
+            `INSERT INTO users (first_name,last_name,username,email,password,date_registered)\
+            VALUES\ 
+            ('${first_name}','${last_name}','${username}','${email}','${encrypted_password}',CURRENT_TIMESTAMP)\
+            RETURNING *`)
+            .then (function(results) {
+                res.json("User succesfully registered.")
+            })
+            .catch(e => {
+                res.status(409).send("Username or email already taken.")
+            });
+        }) 
 });
 
 
@@ -94,7 +93,6 @@ app.post('/login', (req, res) => {
         res.status(404).send("Password is required");
     }
     var stored_password = results[0].password;
-    console.log(stored_password);
     bcrypt.compare(password, stored_password, function(err, result) {
         if(result) {
             res.json({status : "User has successfully logged in"});
