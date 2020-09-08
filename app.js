@@ -99,7 +99,7 @@ app.post('/login', (req, res) => {
         if(result == true) {
             res.json({status : "User has successfully logged in"});
         } else {
-            res.status(404).send("Email/Password combination did not match");
+            res.status(409).send("Email/Password combination did not match");
         }
     });
 })
