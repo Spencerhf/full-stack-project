@@ -1,0 +1,17 @@
+.card-link {
+    text-decoration: none;
+    color: black;
+}
+
+.card-hover:hover {
+    width: 210px;
+    height: 145px;
+    padding-top: 8px;
+    border: 2px solid rgb(129, 173, 238);
+}
+
+.card-hover {
+    height: 135px;
+    width: 200px;
+    transition: width .4s, height .4s, padding-top .4s;
+}
