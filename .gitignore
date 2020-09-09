@@ -1,1 +1,2 @@
 git rm --cached .DS_Store
+git rm --cached node_modules
