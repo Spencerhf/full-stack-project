@@ -62,20 +62,18 @@ app.post('/register', (req, res) => {
     var email = req.body.email;
     var password = req.body.password;
     bcrypt.hash(password, saltRounds, function(err, hash) {
-        let password = hash;
-        console.log(password)
+        var password = hash;
+
+        db.query(`INSERT INTO users (first_name,last_name,username,email,password)\
+            VALUES ('${first_name}','${last_name}','${username}','${email}','${password}')\
+            RETURNING *`)
+        .then (function(results) {
+            res.json("User succesfully registered.")
         })
-    db.query(
-        `INSERT INTO users (first_name,last_name,username,email,password)\
-        VALUES\ 
-        ('${first_name}','${last_name}','${username}','${email}','${password}')\
-        RETURNING *`)
-    .then (function(results) {
-        res.json("User succesfully registered.")
+        .catch(e => {
+            res.status(409).send("Username or email already taken.")
+        });
     })
-    .catch(e => {
-        res.status(409).send("Username or email already taken.")
-    });
 });
 
 
@@ -84,25 +82,31 @@ app.post('/register', (req, res) => {
 app.post('/login', (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
+
     if(!username) {
         res.status(404).send("Username is required");
     }
+    
     if(!password) {
         res.status(404).send("Password is required");
     }
-    if(!users[username]) {
-        res.status(404).send("No account with that username exists.");
-    }
-    var stored_password = users[password];
+
+    db.query(`SELECT * FROM users WHERE username = '${username}'`).then (function (users) {
+
+    var stored_password = users[0].password;
     console.log(stored_password);
     bcrypt.compare(password, stored_password, function(err, result) {
         if(result == true) {
-            res.json({status : "User has successfully logged in"});
+            res.send("User has successfully logged in");
         } else {
-            res.status(404).send("Email/Password combination did not match");
+            res.status(409).send("Incorrect password");
         }
-    });
-})
+        })
+    }) .catch(e => {
+        res.status(409).send("Email/Password combination did not match")
+        });
+
+    })
 
 
 //Create Topic
