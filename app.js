@@ -2,9 +2,13 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const promise = require('bluebird');
 const bodyParser = require('body-parser');
+const app = express();
+  
+// Set EJS as templating engine 
+app.set('view engine', 'ejs'); 
 // For bcrypt
 const saltRounds = 10;
-const app = express();
+
 const port = process.env.PORT || 3000;
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -109,7 +113,7 @@ app.post('/login', (req, res) => {
 
 //Create Topic
 app.post('/forums/:forum/topics', (req,res) => {
-    let forum_id = req.params.forum_id;
+    let forum_id = req.params.forum;
     if ( req.body.topic === '' || req.body.topic === 'undefined' ) {
         res.send('Please enter valid topic.');
     } else if ( req.body.username_id === '' || req.body.username_id === 'undefined' ) {
@@ -123,6 +127,7 @@ app.post('/forums/:forum/topics', (req,res) => {
         .then(function (results) {
             res.json(results);
         }).catch(e => {
+            console.log(e)
             res.status(400).send("An error occurred.")
         });
     };
@@ -211,9 +216,13 @@ app.get('/forums/:forum/topics', (req,res) => {
     let forum_id = req.params.forum;
     db.query(
         `SELECT * FROM topics\
-        WHERE forum_id = '${forum_id}'`
+        FULL OUTER JOIN forum ON topics.forum_id = forum.id\
+        FULL OUTER JOIN users ON topics.username_id = users.id\
+        WHERE topics.forum_id = ${forum_id} AND forum.id = ${forum_id}`
     ).then (function(results) {
-         res.json(results) 
+        console.log(results);
+        let topics = results
+        res.render('forum', {topics: topics}); 
     })
     .catch(e => {
         res.status(404).send("That forum does not exist.")
