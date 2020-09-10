@@ -46,12 +46,25 @@
                 <input class="w-75 form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button id="search-submit-btn" class="link-color btn my-2 my-sm-0" type="submit">Search</button>
               </form>
-              <h1>Welcome to the <%= topics[0].name %> forum</h1>
-              <% for(var i=0; i<topics.length; i++){ %>
-                <h1><%= topics[i].topic %></h1>
-                <h3><%= topics[i].username %></h3>
-                <h4><%= topics[i].date_created %></h4>
-                <% } %>
+              <h1><%= topics[0].name %></h1>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Topic</th>
+                    <th scope="col">Posted by</th>
+                    <th scope="col">Posted on</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for(var i=0; i<topics.length; i++){ %>
+                  <tr>    
+                    <th><a href="/forums/<%= topics[i].forum_id %>/topics/<%= topics[i].topic_id %>"><%= topics[i].topic %></a></th>
+                    <td><%= topics[i].username %></td>
+                    <td><%= topics[i].date_created %></td> 
+                  </tr>
+                  <% } %>
+                </tbody>
+              </table>
             </div>
             <div id="top-forum-column" class="col bg-dark" style="max-width: 350px;">
               <h2 class="mt-4 link-color text-center">Discover</h2>
