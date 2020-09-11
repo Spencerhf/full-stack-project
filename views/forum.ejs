@@ -18,7 +18,7 @@
     <div class="container-fluid">
       <div id="nav-column" class="vh-100 fixed-top col bg-dark" style="min-width: 225px; max-width: 225px;">
           <nav class="flex-column navbar navbar-expand-lg">
-              <img id="logo-img" class="mt-4" src="../images/forum-logo.png" alt="Logo">
+              <img id="logo-img" class="mt-4" src="../../images/forum-logo.png" alt="Logo" style="max-width: 160px">
               <div id="navbarNav">
                 <ul class="mt-4 text-center flex-column navbar-nav">
                   <li class="mb-4 nav-item">
@@ -53,12 +53,13 @@
                     <th scope="col">Topic</th>
                     <th scope="col">Posted by</th>
                     <th scope="col">Posted on</th>
+                    <th scope="col">Comments</th>
                   </tr>
                 </thead>
                 <tbody>
                   <% for(var i=0; i<topics.length; i++){ %>
                   <tr>    
-                    <th><a href="/forums/<%= topics[i].forum_id %>/topics/<%= topics[i].topic_id %>"><%= topics[i].topic %></a></th>
+                    <th><a href="/forums/<%= topics[i].forum_id %>/topics/<%= topics[i].topic_id %>/posts"><%= topics[i].topic %></a></th>
                     <td><%= topics[i].username %></td>
                     <td><%= topics[i].date_created %></td> 
                   </tr>
