@@ -2,6 +2,8 @@ $( document ).ready(function() {
 
                             //The login function
     function login () {
+        sessionStorage.clear();
+
                 // login variables
         let username = document.getElementById('username');
         let password = document.getElementById('password');
@@ -26,14 +28,16 @@ $( document ).ready(function() {
                         "password": `${password.value}`
 
                     }, function( results ) {
+
                         alert("you're now logged in")
-                        sessionStorage.setItem( 'key', `${results}` );
-                        let userLoggedIn = sessionStorage.getItem( 'key' );    
+                        sessionStorage.setItem( 'userId', `${results[0].id}` );
+                        let userLoggedIn = sessionStorage.getItem( 'userId' );    
+                        console.log(results);
 
                         username.value = '';
                         password.value = '';
 
-                        window.location = '../views/forum.ejs';
+                        window.location = '../UserPage/Forums/index.html';
                         logInScreen(userLoggedIn);
 
                     }).fail(function() {

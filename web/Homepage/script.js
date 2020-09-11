@@ -3,21 +3,6 @@ $( document ).ready(function() {
     function loadForums() {
         $.get('http://localhost:3000/forums', function( forums ) {
 
-            let currentIndex = forums.length, temporaryValue, randomIndex;
-
-            // While there remain elements to shuffle...
-            while (0 !== currentIndex) {
-          
-              // Pick a remaining element...
-              randomIndex = Math.floor(Math.random() * currentIndex);
-              currentIndex -= 1;
-          
-              // And swap it with the current element.
-              temporaryValue = forums[currentIndex];
-              forums[currentIndex] = forums[randomIndex];
-              forums[randomIndex] = temporaryValue;
-            }
-
             for(var i=0; i <= forums.length; i++) {
                 renderForum(forums, i);
             }

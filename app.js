@@ -2,9 +2,14 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const promise = require('bluebird');
 const bodyParser = require('body-parser');
+const app = express();
+const session = require('express-session');
+  
+// Set EJS as templating engine 
+app.set('view engine', 'ejs'); 
 // For bcrypt
 const saltRounds = 10;
-const app = express();
+
 const port = process.env.PORT || 3000;
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -22,6 +27,14 @@ const config = {
     database: 'forum_project',
     user: 'spencer'
 };
+
+app.use(session({
+    secret: process.env.SECRET_KEY || 'dev',
+    resave: true,
+    saveUninitialized: false,
+    cookie: {maxAge: 60000}
+  }));
+
 // Load and initialize pg-promise:
 const pgp = require('pg-promise')(initOptions);
 // Create the database instance:
@@ -36,6 +49,17 @@ app.use(express.json());
 app.use(express.static(__dirname + '/web'));
   
 
+let userLoggedIn = false;
+
+function authenticationMiddleware(req, res, next) {
+    if(userLoggedIn) {
+        console.log(userLoggedIn);
+        next()
+    } else {
+        console.log('User not authenticated');
+        res.redirect('/login');
+    }
+}
 
 
 //Register New User
@@ -62,18 +86,23 @@ app.post('/register', (req, res) => {
     var email = req.body.email;
     var password = req.body.password;
     bcrypt.hash(password, saltRounds, function(err, hash) {
-        var password = hash;
-
-        db.query(`INSERT INTO users (first_name,last_name,username,email,password)\
-            VALUES ('${first_name}','${last_name}','${username}','${email}','${password}')\
+        var encrypted_password = hash;
+        db.query(
+            `SET QUOTED_IDENTIFIER OFF\
+            INSERT INTO users (first_name,last_name,username,email,password,date_registered)\
+            VALUES\ 
+            ('${first_name}','${last_name}','${username}','${email}','${encrypted_password}',CURRENT_TIMESTAMP)\
             RETURNING *`)
-        .then (function(results) {
-            res.json("User succesfully registered.")
-        })
-        .catch(e => {
-            res.status(409).send("Username or email already taken.")
-        });
-    })
+            .then (function(results) {
+                res.json(results);
+                userLoggedIn = true;
+                req.session.user = results;
+            })
+            .catch(e => {
+                console.log(e)
+                res.status(409).send("Username or email already taken.")
+            });
+        }) 
 });
 
 
@@ -82,36 +111,37 @@ app.post('/register', (req, res) => {
 app.post('/login', (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
-
+    db.query(`SELECT * FROM users\
+    WHERE username = '${username}'`)
+    .then (function (results) {
     if(!username) {
         res.status(404).send("Username is required");
     }
-    
     if(!password) {
         res.status(404).send("Password is required");
     }
-
-    db.query(`SELECT * FROM users WHERE username = '${username}'`).then (function (users) {
-
-    var stored_password = users[0].password;
-    console.log(stored_password);
+    var stored_password = results[0].password;
     bcrypt.compare(password, stored_password, function(err, result) {
-        if(result == true) {
-            res.send("User has successfully logged in");
+        if(result) {
+            userLoggedIn = true;
+            req.session.user = results;
+            console.log('logged in bool ' + userLoggedIn);
+            res.json(results);
         } else {
             res.status(409).send("Incorrect password");
         }
         })
-    }) .catch(e => {
+    })
+    .catch(e => {
+        console.log(e)
         res.status(409).send("Email/Password combination did not match")
         });
-
     })
 
 
 //Create Topic
 app.post('/forums/:forum/topics', (req,res) => {
-    let forum_id = req.params.forum_id;
+    let forum_id = req.params.forum;
     if ( req.body.topic === '' || req.body.topic === 'undefined' ) {
         res.send('Please enter valid topic.');
     } else if ( req.body.username_id === '' || req.body.username_id === 'undefined' ) {
@@ -125,6 +155,7 @@ app.post('/forums/:forum/topics', (req,res) => {
         .then(function (results) {
             res.json(results);
         }).catch(e => {
+            console.log(e)
             res.status(400).send("An error occurred.")
         });
     };
@@ -143,13 +174,15 @@ app.post('/forums/:forum/topics/:topic/posts', (req,res) => {
         res.send('You must be logged in to post.');
     } else {
         db.query(
-            `INSERT INTO posts (body,likes,is_deleted,forum_id,topic_id,username_id,date_created)\
+            `SET QUOTED_IDENTIFIER OFF\
+            INSERT INTO posts (body,likes,is_deleted,forum_id,topic_id,username_id,date_created)\
             VALUES\ 
             ('${body}',0,FALSE,${forum_id},${topic_id},${username_id},CURRENT_TIMESTAMP)\
             RETURNING *`)
         .then(function (results) {
             res.json(results)
         }).catch(e => {
+            console.log(e)
             res.status(400).send("An error occurred.")
         });
     };
@@ -168,13 +201,15 @@ app.post('/forums/:forum/topics/:topic/posts/:post/replies', (req,res) => {
         res.send('You must be logged in to reply.');
     } else {
         db.query(
-            `INSERT INTO replies (reply,likes,is_deleted,forum_id,topic_id,post_id,username_id,date_created)\
+            `SET QUOTED_IDENTIFIER OFF\
+            INSERT INTO replies (reply,likes,is_deleted,forum_id,topic_id,post_id,username_id,date_created)\
             VALUES\ 
             ('${reply}',0,FALSE,${forum_id},${topic_id},${post_id},${username_id},CURRENT_TIMESTAMP)\
             RETURNING *`)
         .then(function (results) {
             res.json(results)
         }).catch(e => {
+            console.log(e)
             res.status(400).send("An error occurred.")
         });
     };
@@ -185,7 +220,7 @@ app.post('/forums/:forum/topics/:topic/posts/:post/replies', (req,res) => {
 //Get All Forums
 app.get('/forums', (req,res) => {
     db.query(
-        'SELECT * FROM forum'
+        'SELECT * FROM forums'
     ).then (function(results) {
          res.json(results) 
     })
@@ -199,11 +234,12 @@ app.get('/forums/:forum', (req,res) => {
     let forum_id = req.params.forum;
     db.query(
         `SELECT * FROM forum\
-        WHERE id = '${forum_id}'`
+        WHERE forum_id = '${forum_id}'`
     ).then (function(results) {
          res.json(results) 
     })
     .catch(e => {
+        console.log(e)
         res.status(404).send("That forum does not exist.")
     }); 
 })
@@ -212,12 +248,16 @@ app.get('/forums/:forum', (req,res) => {
 app.get('/forums/:forum/topics', (req,res) => {
     let forum_id = req.params.forum;
     db.query(
-        `SELECT * FROM topics\
-        WHERE forum_id = '${forum_id}'`
+        `SELECT * FROM forums\
+        INNER JOIN topics ON topics.forum_id = forums.id\
+        LEFT OUTER JOIN users ON topics.username_id = users.id\
+        WHERE topics.forum_id = ${forum_id} AND forums.id = ${forum_id}`
     ).then (function(results) {
-         res.json(results) 
+        console.log(results);
+        res.json(results);
     })
     .catch(e => {
+        console.log(e)
         res.status(404).send("That forum does not exist.")
     });
 });
@@ -229,11 +269,12 @@ app.get('/forums/:forum/topics/:topic', (req,res) => {
     db.query(
         `SELECT * FROM topics\
         WHERE forum_id = '${forum_id}'\
-        AND id = '${topic_id}'`
+        AND topic_id = '${topic_id}'`
     ).then (function(results) {
          res.json(results) 
     })
     .catch(e => {
+        console.log(e)
         res.status(404).send("That topic does not exist.")
     });
 });
@@ -250,6 +291,7 @@ app.get('/forums/:forum/topics/:topic/posts', (req,res) => {
          res.json(results) 
     })
     .catch(e => {
+        console.log(e)
         res.status(404).send("That topic does not exist.")
     });
 });
@@ -263,11 +305,12 @@ app.get('/forums/:forum/topics/:topic/posts/:post', (req,res) => {
         `SELECT * FROM posts\
         WHERE forum_id = '${forum_id}'\
         AND topic_id = '${topic_id}'\
-        AND id = '${post_id}'`
+        AND post_id = '${post_id}'`
     ).then (function(results) {
          res.json(results) 
     })
     .catch(e => {
+        console.log(e)
         res.status(404).send("That post does not exist.")
     });
 });
@@ -286,6 +329,7 @@ app.get('/forums/:forum/topics/:topic/posts/:post/replies', (req,res) => {
          res.json(results) 
     })
     .catch(e => {
+        console.log(e)
         res.status(404).send("That post does not exist.")
     });
 });
@@ -301,11 +345,12 @@ app.get('/forums/:forum/topics/:topic/posts/:post/replies/:reply', (req,res) => 
         WHERE forum_id = '${forum_id}'\
         AND topic_id = '${topic_id}'\
         AND post_id = '${post_id}'\
-        AND id = '${reply_id}'`
+        AND reply_id = '${reply_id}'`
     ).then (function(results) {
          res.json(results) 
     })
     .catch(e => {
+        console.log(e)
         res.status(404).send("That reply does not exist.")
     });
 });
