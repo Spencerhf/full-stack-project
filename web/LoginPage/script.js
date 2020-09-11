@@ -33,7 +33,7 @@ $( document ).ready(function() {
                         username.value = '';
                         password.value = '';
 
-                        window.location = '../UserPage/index.html';
+                        window.location = '../views/forum.ejs';
                         logInScreen(userLoggedIn);
 
                     }).fail(function() {
