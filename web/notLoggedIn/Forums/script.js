@@ -34,32 +34,9 @@ $( document ).ready(function() {
 
     window.forumCardClicked = (clickedId) => {
         
-        //Reseting the column to empty
-        let forumContainer = document.getElementById('forum-container');
-        forumContainer.innerHTML = '';
-        forumContainer.className = '';
-
-        let topicForm = `
-        <div>
-            <h1></h1>
-        </div>
-            <div class="mt-4 row mx-auto">
-                <div class="col-6">
-                    <h2 class="text-center">Create Topic</h2>
-                    <div id="form-div">
-                        <form id="form-container" class="w-100 mx-auto">
-                            <div class="text-fields form-group">
-                                <label for="topic">Topic Title <small>(optional)</small></label>
-                                <input class="form-control" id="topicTitle">
-                            </div>
-                        </form>
-                    </div>    
-                </div>
-                <div class="col-6"></div>
-            </div>
-        `;
-
-        forumContainer.innerHTML += topicForm;
+        window.location = '../Topics/index.html';
+        sessionStorage.setItem( 'forumId', `${clickedId}` );
+        let forumId = sessionStorage.getItem( 'forumId' );
 
     };
 

@@ -121,6 +121,7 @@ app.post('/login', (req, res) => {
     }
     var stored_password = results[0].password;
     bcrypt.compare(password, stored_password, function(err, result) {
+        console.log(result);
         if(result) {
             res.json({status : "User has successfully logged in"});
             // req.session.user = response;
@@ -131,7 +132,7 @@ app.post('/login', (req, res) => {
     })
     .catch(e => {
         console.log(e)
-        res.status(409).send("Email/Password combination did not match")
+        res.status(404).send("Email/Password combination did not match")
         });
     })
 
@@ -246,10 +247,13 @@ app.get('/forums/:forum', (req,res) => {
 app.get('/forums/:forum/topics', (req,res) => {
     let forum_id = req.params.forum;
     db.query(
+
         `SELECT * FROM forum\
         INNER JOIN topics ON topics.forum_id = forum.forum_id\
         LEFT OUTER JOIN users ON topics.username_id = users.user_id\
         WHERE topics.forum_id = ${forum_id} AND forum.forum_id = ${forum_id}`
+
+        
     ).then (function(results) {
         console.log(results);
         let topics = results
