@@ -25,7 +25,7 @@ const config = {
     host: 'localhost',
     port: 5432,
     database: 'forum_project',
-    user: 'zac-evans'
+    user: 'spencer'
 };
 
 app.use(session({
@@ -90,7 +90,7 @@ app.post('/register', (req, res) => {
         db.query(
             `INSERT INTO users (first_name,last_name,username,email,password,date_registered)\
             VALUES\ 
-            ('${first_name}','${last_name}','${username}','${email}','${encrypted_password}',CURRENT_TIMESTAMP)\
+            ('${first_name}','${last_name}','${username}','${email}','${encrypted_password}')\
             RETURNING *`)
             .then (function(results) {
                 res.json(results);
@@ -219,7 +219,7 @@ app.get('/forums', (req,res) => {
         'SELECT * FROM forum'
     ).then (function(results) {
         console.log(results);
-        let forums = results
+        let forums = results;
         res.render('forums', {forums: forums}) 
     })
     .catch(e => {

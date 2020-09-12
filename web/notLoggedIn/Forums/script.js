@@ -14,7 +14,7 @@ $( document ).ready(function() {
         let container = document.getElementById('forum-container');
 
         let forumCard = `
-        <a href="#" id="${forum[i].id}" onclick="forumCardClicked(this.id)" class="card-link d-block m-3 mx-auto">
+        <a href="#" id="${forum[i].forum_id}" onclick="forumCardClicked(this.id)" class="card-link d-block m-3 mx-auto">
             <div class="card-hover card">
                 <div class="card-body text-center">
                     <h1 class="icon">${forum[i].icons}</h1>
@@ -34,7 +34,7 @@ $( document ).ready(function() {
 
     window.forumCardClicked = (clickedId) => {
         
-        window.location = '../Topics/index.html';
+        window.location = '../../UserPage/Topics/index.html';
         sessionStorage.setItem( 'forumId', `${clickedId}` );
         let forumId = sessionStorage.getItem( 'forumId' );
 
