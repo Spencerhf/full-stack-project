@@ -25,7 +25,7 @@ const config = {
     host: 'localhost',
     port: 5432,
     database: 'forum_project',
-    user: 'spencer'
+    user: 'zac-evans'
 };
 
 app.use(session({
@@ -88,7 +88,11 @@ app.post('/register', (req, res) => {
     bcrypt.hash(password, saltRounds, function(err, hash) {
         var encrypted_password = hash;
         db.query(
+<<<<<<< HEAD
             `INSERT INTO users (first_name,last_name,username,email,password)\
+=======
+            `INSERT INTO users (first_name,last_name,username,email,password,date_registered)\
+>>>>>>> 04036e198e4d4a4c88812bdfc1719b437dbcb9fe
             VALUES\ 
             ('${first_name}','${last_name}','${username}','${email}','${encrypted_password}')\
             RETURNING *`)
@@ -123,10 +127,8 @@ app.post('/login', (req, res) => {
     bcrypt.compare(password, stored_password, function(err, result) {
         console.log(result);
         if(result) {
-            userLoggedIn = true;
-            req.session.user = results;
-            console.log('logged in bool ' + userLoggedIn);
-            res.json(results);
+            res.json({status : "User has successfully logged in"});
+            // req.session.user = response;
         } else {
             res.status(409).send("Incorrect password");
         }
@@ -174,8 +176,7 @@ app.post('/forums/:forum/topics/:topic/posts', (req,res) => {
         res.send('You must be logged in to post.');
     } else {
         db.query(
-            `SET QUOTED_IDENTIFIER OFF\
-            INSERT INTO posts (body,likes,is_deleted,forum_id,topic_id,username_id,date_created)\
+            `INSERT INTO posts (body,likes,is_deleted,forum_id,topic_id,username_id,date_created)\
             VALUES\ 
             ('${body}',0,FALSE,${forum_id},${topic_id},${username_id},CURRENT_TIMESTAMP)\
             RETURNING *`)
@@ -201,8 +202,7 @@ app.post('/forums/:forum/topics/:topic/posts/:post/replies', (req,res) => {
         res.send('You must be logged in to reply.');
     } else {
         db.query(
-            `SET QUOTED_IDENTIFIER OFF\
-            INSERT INTO replies (reply,likes,is_deleted,forum_id,topic_id,post_id,username_id,date_created)\
+            `INSERT INTO replies (reply,likes,is_deleted,forum_id,topic_id,post_id,username_id,date_created)\
             VALUES\ 
             ('${reply}',0,FALSE,${forum_id},${topic_id},${post_id},${username_id},CURRENT_TIMESTAMP)\
             RETURNING *`)
@@ -220,11 +220,14 @@ app.post('/forums/:forum/topics/:topic/posts/:post/replies', (req,res) => {
 //Get All Forums
 app.get('/forums', (req,res) => {
     db.query(
-        'SELECT * FROM forums'
+        'SELECT * FROM forum'
     ).then (function(results) {
-         res.json(results) 
+        console.log(results);
+        let forums = results
+        res.render('forums', {forums: forums}) 
     })
     .catch(e => {
+        console.log(e)
         res.status(404).send("Something unexpected happened.")
     });
 });
@@ -236,11 +239,11 @@ app.get('/forums/:forum', (req,res) => {
         `SELECT * FROM forum\
         WHERE forum_id = '${forum_id}'`
     ).then (function(results) {
-         res.json(results) 
+         res.json(results);
     })
     .catch(e => {
         console.log(e)
-        res.status(404).send("That forum does not exist.")
+        res.status(404).send("An error occurred")
     }); 
 })
 
@@ -248,13 +251,17 @@ app.get('/forums/:forum', (req,res) => {
 app.get('/forums/:forum/topics', (req,res) => {
     let forum_id = req.params.forum;
     db.query(
-        `SELECT * FROM forums\
-        INNER JOIN topics ON topics.forum_id = forums.forum_id\
+
+        `SELECT * FROM forum\
+        INNER JOIN topics ON topics.forum_id = forum.forum_id\
         LEFT OUTER JOIN users ON topics.username_id = users.user_id\
-        WHERE topics.forum_id = ${forum_id} AND forums.forum_id = ${forum_id}`
+        WHERE topics.forum_id = ${forum_id} AND forum.forum_id = ${forum_id}`
+
+        
     ).then (function(results) {
         console.log(results);
-        res.json(results);
+        let topics = results
+        res.render('posts', {topics: topics}); 
     })
     .catch(e => {
         console.log(e)
@@ -285,10 +292,15 @@ app.get('/forums/:forum/topics/:topic/posts', (req,res) => {
     let topic_id = req.params.topic;
     db.query(
         `SELECT * FROM posts\
-        WHERE forum_id = '${forum_id}'\
-        AND topic_id = '${topic_id}'`
+        LEFT JOIN forum ON posts.forum_id = forum.forum_id\
+        LEFT JOIN topics ON topics.topic_id = posts.topic_id\
+        LEFT JOIN users ON users.user_id = posts.username_id\
+        WHERE posts.forum_id = '${forum_id}'\
+        AND posts.topic_id = '${topic_id}'`
     ).then (function(results) {
-         res.json(results) 
+        console.log(results);
+        let comments = results
+        res.render('comments', {comments: comments}); 
     })
     .catch(e => {
         console.log(e)
@@ -354,6 +366,12 @@ app.get('/forums/:forum/topics/:topic/posts/:post/replies/:reply', (req,res) => 
         res.status(404).send("That reply does not exist.")
     });
 });
+
+
+//Get Dashboard
+app.get('/dashboard', authenticationMiddleware, function (req, res) {
+    res.send('Hello, ' + req.username)
+})
 
 
 
