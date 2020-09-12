@@ -88,10 +88,9 @@ app.post('/register', (req, res) => {
     bcrypt.hash(password, saltRounds, function(err, hash) {
         var encrypted_password = hash;
         db.query(
-            `SET QUOTED_IDENTIFIER OFF\
-            INSERT INTO users (first_name,last_name,username,email,password,date_registered)\
+            `INSERT INTO users (first_name,last_name,username,email,password)\
             VALUES\ 
-            ('${first_name}','${last_name}','${username}','${email}','${encrypted_password}',CURRENT_TIMESTAMP)\
+            ('${first_name}','${last_name}','${username}','${email}','${encrypted_password}')\
             RETURNING *`)
             .then (function(results) {
                 res.json(results);

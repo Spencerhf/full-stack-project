@@ -30,7 +30,7 @@ $( document ).ready(function() {
                     }, function( results ) {
 
                         alert("you're now logged in")
-                        sessionStorage.setItem( 'userId', `${results[0].id}` );
+                        sessionStorage.setItem( 'userId', `${results[0].user_id}` );
                         let userLoggedIn = sessionStorage.getItem( 'userId' );    
                         console.log(results);
 
@@ -74,7 +74,7 @@ $( document ).ready(function() {
                         password.value = '';
 
                         
-                        window.location = '../UserPage/index.html';
+                        window.location = '../UserPage/Forums/index.html';
                         logInScreen(userLoggedIn);
 
                     })  
