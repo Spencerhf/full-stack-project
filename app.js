@@ -25,7 +25,7 @@ const config = {
     host: 'localhost',
     port: 5432,
     database: 'forum_project',
-    user: 'spencer'
+    user: 'davidsullivan'
 };
 
 app.use(session({
