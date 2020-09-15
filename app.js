@@ -25,7 +25,7 @@ const config = {
     host: 'localhost',
     port: 5432,
     database: 'forum_project',
-    user: 'spencer'
+    user: 'zac-evans'
 };
 
 app.use(session({
@@ -138,7 +138,7 @@ app.post('/login', (req, res) => {
 
 
 //Create Topic
-app.post('/forums/:forum/topics', (req,res) => {
+app.post('loggedIn/Forums/forums/:forum/topics', (req,res) => {
     let forum_id = req.params.forum;
     if ( req.body.topic === '' || req.body.topic === 'undefined' ) {
         res.send('Please enter valid topic.');
