@@ -29,16 +29,14 @@ $( document ).ready(function() {
 
                     }, function( results ) {
 
-                        alert("you're now logged in")
+                        //alert("you're now logged in")
                         sessionStorage.setItem( 'userId', `${results[0].user_id}` );
                         let userLoggedIn = sessionStorage.getItem( 'userId' );    
-                        console.log(results);
 
                         username.value = '';
                         password.value = '';
 
-                        window.location = '../UserPage/Forums/index.html';
-                        logInScreen(userLoggedIn);
+                        window.location = '/forums';
 
                     }).fail(function() {
                         alert('No account found with that username or incorrect password');
@@ -63,8 +61,8 @@ $( document ).ready(function() {
                         "password": `${password.value}`,
 
                     }, function( results ) {
-                        sessionStorage.setItem( 'key', `${results}` );
-                        let userLoggedIn = sessionStorage.getItem( 'key' ); 
+                        sessionStorage.setItem( 'userId', `${results[0].user_id}` );
+                        let userLoggedIn = sessionStorage.getItem( 'userId' );  
 
                         console.log(results);
                         username.value = '';
@@ -74,8 +72,7 @@ $( document ).ready(function() {
                         password.value = '';
 
                         
-                        window.location = '../UserPage/Forums/index.html';
-                        logInScreen(userLoggedIn);
+                        window.location = '/forums';
 
                     })  
                 }
@@ -108,16 +105,6 @@ $( document ).ready(function() {
         
     }
 
-
-    function logInScreen() {
-            $.get('http://localhost:3000/forums', function( forums ) {
-    
-                console.log(forums);
-    
-            })
-    }
-
-    logInScreen();
     register();
     login();
 })

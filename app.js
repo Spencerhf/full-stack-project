@@ -88,7 +88,7 @@ app.post('/register', (req, res) => {
     bcrypt.hash(password, saltRounds, function(err, hash) {
         var encrypted_password = hash;
         db.query(
-            `INSERT INTO users (first_name,last_name,username,email,password,date_registered)\
+            `INSERT INTO users (first_name,last_name,username,email,password)\
             VALUES\ 
             ('${first_name}','${last_name}','${username}','${email}','${encrypted_password}')\
             RETURNING *`)
@@ -110,6 +110,7 @@ app.post('/register', (req, res) => {
 app.post('/login', (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
+
     db.query(`SELECT * FROM users\
     WHERE username = '${username}'`)
     .then (function (results) {
@@ -120,11 +121,11 @@ app.post('/login', (req, res) => {
         res.status(404).send("Password is required");
     }
     var stored_password = results[0].password;
+
     bcrypt.compare(password, stored_password, function(err, result) {
-        console.log(result);
         if(result) {
-            res.json({status : "User has successfully logged in"});
-            // req.session.user = response;
+            res.json(results);
+            req.session.user = res;
         } else {
             res.status(409).send("Incorrect password");
         }
@@ -216,11 +217,11 @@ app.post('/forums/:forum/topics/:topic/posts/:post/replies', (req,res) => {
 //Get All Forums
 app.get('/forums', (req,res) => {
     db.query(
-        'SELECT * FROM forum'
+    'SELECT * FROM forum'
     ).then (function(results) {
         console.log(results);
         let forums = results;
-        res.render('forums', {forums: forums}) 
+        res.render('loggedOut/forums', {forums: forums}); 
     })
     .catch(e => {
         console.log(e)
@@ -256,7 +257,7 @@ app.get('/forums/:forum/topics', (req,res) => {
     ).then (function(results) {
         console.log(results);
         let topics = results
-        res.render('posts', {topics: topics}); 
+        res.render('loggedOut/topics', {topics: topics}); 
     })
     .catch(e => {
         console.log(e)
@@ -293,9 +294,9 @@ app.get('/forums/:forum/topics/:topic/posts', (req,res) => {
         WHERE posts.forum_id = '${forum_id}'\
         AND posts.topic_id = '${topic_id}'`
     ).then (function(results) {
-        console.log(results);
-        let comments = results
-        res.render('comments', {comments: comments}); 
+        let posts = results;
+        console.log(posts.length);
+        res.render('topics', {posts: posts}); 
     })
     .catch(e => {
         console.log(e)
