@@ -1,0 +1,27 @@
+body {
+    background-color: rgb(114, 156, 219);
+}
+
+#form-div {
+    width: 500px;
+    margin: auto;
+    margin-top: 18%;
+    background-color: rgb(129, 173, 238);
+    padding: 25px;
+}
+
+.text-fields {
+    width: 250px;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+#btn-div {
+    width: 250px;
+    margin: auto;
+    margin-top: 20px;
+}
+
+#loginBtn {
+    display: none;
+}
