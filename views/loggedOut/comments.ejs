@@ -13,58 +13,59 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
 </head>
-<body>
+<body class="bg-light">
 
-    <div class="container-fluid">
-      <div id="nav-column" class="vh-100 fixed-top col bg-dark" style="min-width: 225px; max-width: 225px;">
-          <nav class="flex-column navbar navbar-expand-lg">
-              <img id="logo-img" class="mt-4" src="/images/forum-logo.png" alt="Logo" style="max-width: 160px">
-              <div id="navbarNav">
-                <ul class="mt-4 text-center flex-column navbar-nav">
-                  <li class="mb-4 nav-item">
-                    <a class="nav-link link-color" href="#">Home</a>
-                  </li>
-                  <li class="mb-4 nav-item">
-                    <a class="nav-link link-color" href="#">About Us</a>
-                  </li>
-                  <li class="mb-4 nav-item2">
-                    <a class="nav-link link-color" href="#">Contact Us</a>
-                  </li>
-                  <li class="mb-4 nav-item">
-                    <button id="login-btn" class="btn"><a href="/LoginPage/index.html">Login/Sign Up</a></button>
-                  </li>
-                </ul>
-              </div>
-            </nav>
-      </div>
-      <div id="topic-list" class="container-fluid">
-        <div class="row">     
-      </div>
-        <div class="vh-100 row flex-nowrap" style="margin-left: 210px;">
-            <div class="col bg-light">
+    <!-- The navigation bar -->
+    <div class="container-fluid vh-100">
+      <div class='row'>
+        <div id="nav-column" class="col-12 col-md-3 bg-dark" style="">
+          <nav class="flex-md-column flex-row d-flex navbar navbar-dark navbar-expand-md">
+            <a class="navbar-brand m-3" href="/forums"><img id="logo-img" src="/images/forum-logo.png" alt="Logo" style="max-width: 160px"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbarNav" class="collapse navbar-collapse">
+              <ul class="mt-4 text-center flex-column navbar-nav">
+                <li class="mb-4 nav-item">
+                  <h5><a class="nav-link link-color" href="#">Home</a></h5>
+                </li>
+                <li class="mb-4 nav-item">
+                  <h5><a class="nav-link link-color" href="#">About Us</a></h5>
+                </li>
+                <li class="mb-4 nav-item">
+                  <h5><a class="nav-link link-color" href="#">Contact Us</a></h5>
+                </li>
+                <li class="mb-4 nav-item">
+                  <button role="button" href="/LoginPage/index.html" id="login-btn" class="btn btn-lg">Login/Sign Up</button>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+
+      <div id="comment-list" class="vh-100 col-12 col-md-9 d-flex m-0 p-4 bg-light">
+            <div class='w-100'>
               <form class="form-inline my-2 w-100 justify-content-center">
                 <input class="w-75 form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button id="search-submit-btn" class="link-color btn my-2 my-sm-0" type="submit">Search</button>
               </form>
-             
-              <h1><%= comments[0].topic %></h1>
-              <h4>Return to the <a href="/forums/<%= comments[0].forum_id %>/topics"><%= comments[0].name %></a> forum</h4>
+              <br>
+              <div class="row d-flex justify-content-between">
+                <h1><%= comments[0].topic %></h1>
+                <a class="btn m-2 link-color " href="/forums/<%= comments[0].forum_id %>/topics" role="button"><h5>Back to <%= comments[0].name %></h5></a>
+              </div>
               <% for(var i=0; i<comments.length; i++){ %>
                 <div class="card w-100">
-                    <div class="card-body">
-                        <h5 class="card-title"><%= comments[i].username %></h5>
-                        <h6 class="card-subtitle mb-2 text-muted"><%= comments[i].date_created %></h6>
-                        <p class="card-text"><%= comments[i].body %></p>
-                        <a href="#" class="card-link">Like</a>
-                        <a href="#" class="card-link">Reply</a>
-                    </div>
-                    </div>
-                    <% } %>
-                
+                  <div class="card-body">
+                      <h5 class="card-title"><%= comments[i].username %></h5>
+                      <h6 class="card-subtitle mb-2 text-muted"><%= comments[i].date_created %></h6>
+                      <p class="card-text"><%= comments[i].body %></p>
+                      <a href="#" class="card-link">Like</a>
+                      <a href="#" class="card-link">Reply</a>
+                  </div>
+                </div>
+              <% } %>
               </table>
-            </div>
-            <div id="top-forum-column" class="col bg-dark" style="max-width: 350px;">
-              <h2 class="mt-4 link-color text-center">Discover</h2>
             </div>
         </div>
     </div>

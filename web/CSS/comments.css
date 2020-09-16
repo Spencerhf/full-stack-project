@@ -13,21 +13,12 @@
     color: rgb(114, 156, 219);
 }
 
-#login-btn {
-    background-color: rgb(114, 156, 219);
-
-}
-
-#login-btn a {
-    color: black;
-}
-
 
 #search-submit-btn {
     border: 2px solid rgb(114, 156, 219);
 }
 
-#search-submit-btn:hover {
+.btn:hover {
     background-color: rgb(114, 156, 219);
     color: black;
 }
@@ -52,5 +43,6 @@
 }
 
 .btn {
-    background-color: rgb(114, 156, 219)
+    background-color: rgb(114, 156, 219);
+    color: white
 }

@@ -18,64 +18,60 @@
 </head>
 <body class="bg-light">
 
-    <!-- The navigation bar -->
-    <div class="container-fluid">
-      <div id="nav-column" class="vh-100 fixed-top col bg-dark" style="min-width: 200px; max-width: 200px;">
-          <nav class="flex-column navbar navbar-expand-lg">
-              <img id="logo-img" class="mt-4" src="../images/forum-logo.png" alt="Logo">
-              <div id="navbarNav">
-                <ul class="mt-4 text-center flex-column navbar-nav">
-                  <li class="mb-4 nav-item">
-                    <a class="nav-link link-color" href="#">Home</a>
-                  </li>
-                  <li class="mb-4 nav-item">
-                    <a class="nav-link link-color" href="#">About Us</a>
-                  </li>
-                  <li class="mb-4 nav-item2">
-                    <a class="nav-link link-color" href="#">Contact Us</a>
-                  </li>
-                  <li class="mb-4 nav-item">
-                    <button id="login-btn" class="btn"><a href="/LoginPage/index.html">Login/Sign Up</a></button>
-                  </li>
-                </ul>
-              </div>
-            </nav>
-      </div>
-
-        <!-- The middle and right columns -->
-        <div class="vh-100 row flex-nowrap" style="margin-left: 190px;">
-
-            <!-- Middle column -->
-            <div class="col">
-              
-              <!-- Middle search bar -->
-              <form class="form-inline mt-4 my-2 w-100 justify-content-center">
-                <input class="w-75 form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button id="search-submit-btn" class="link-color btn my-2 my-sm-0" type="submit">Search</button>
-              </form>
-
-              <!-- Forum area -->
-            <div id="forum-container" class="d-flex flex-row flex-wrap mx-auto" style="width: 90%;">
-                <% for(var i=0; i<forums.length; i++){ %>
-                <a href="/forums/<%= forums[i].forum_id %>/topics" id="<%= forums[i].forum_id %>" onclick="forumCardClicked(this.id)" class="card-link d-block m-3 mx-auto">
-                    <div class="card-hover card">
-                        <div class="card-body text-center">
-                            <h1 class="icon"><%- forums[i].icons %></h1>
-                            <h4><%= forums[i].name %></h4>
-                        </div>
-                    </div>
-                </a>
-                <% } %>
-            </div>
-
-            </div>
-
-            <!-- Discover / Top forum column -->
-            <div id="top-forum-column" class="col bg-dark" style="max-width: 350px;">
-              <h2 class="mt-4 link-color text-center">Discover</h2>
-            </div>
-        </div>
+  <!-- The navigation bar -->
+  <div class="container-fluid vh-100">
+    <div class='row'>
+    <div id="nav-column" class="col-12 col-md-3 bg-dark" style="">
+        <nav class="flex-md-column flex-row d-flex navbar navbar-dark navbar-expand-md">
+          <a class="navbar-brand m-3" href="/forums"><img id="logo-img" src="/images/forum-logo.png" alt="Logo" style="max-width: 160px"></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div id="navbarNav" class="collapse navbar-collapse">
+            <ul class="mt-4 text-center flex-column navbar-nav">
+              <li class="mb-4 nav-item">
+                <h5><a class="nav-link link-color" href="#">Home</a></h5>
+              </li>
+              <li class="mb-4 nav-item">
+                <h5><a class="nav-link link-color" href="#">About Us</a></h5>
+              </li>
+              <li class="mb-4 nav-item">
+                <h5><a class="nav-link link-color" href="#">Contact Us</a></h5>
+              </li>
+              <li class="mb-4 nav-item">
+                <button role="button" href="/LoginPage/index.html" id="login-btn" class="btn btn-lg">Login/Sign Up</button>
+              </li>
+            </ul>
+          </div>
+        </nav>
     </div>
+
+        <!-- Forums column -->
+        <div class="vh-100 col-12 col-md-9 d-flex m-0 p-4 bg-light">
+          <div>
+            <!-- Middle search bar -->
+            <form class="form-inline mt-4 my-2 w-100 justify-content-center">
+              <input class="w-75 form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+              <button id="search-submit-btn" class="btn my-2 my-sm-0" type="submit">Search</button>
+            </form>
+
+            <!-- Forum area -->
+          <div id="forum-container" class="d-flex flex-row flex-wrap mx-auto" style="width: 90%;">
+              <% for(var i=0; i<forums.length; i++){ %>
+              <a href="/forums/<%= forums[i].forum_id %>/topics" id="<%= forums[i].forum_id %>" onclick="forumCardClicked(this.id)" class="card-link d-block m-3 mx-auto">
+                  <div class="card-hover card">
+                      <div class="card-body text-center">
+                          <h1 class="icon"><%- forums[i].icons %></h1>
+                          <h4><%= forums[i].name %></h4>
+                      </div>
+                  </div>
+              </a>
+              <% } %>
+          </div>
+        </div>      
+      </div>
+    </div>
+  </div>
     
 
 </body>
