@@ -54,7 +54,7 @@ let userLoggedIn = false;
 function authenticationMiddleware(req, res, next) {
     if(userLoggedIn) {
         console.log(userLoggedIn);
-        next()
+        next();
     } else {
         console.log('User not authenticated');
         res.redirect('/login');
@@ -139,7 +139,7 @@ app.post('/login', (req, res) => {
 
 
 //Create Topic
-app.post('loggedIn/Forums/forums/:forum/topics', (req,res) => {
+app.post('/forums/:forum/topics', authenticationMiddleware, (req,res) => {
     let forum_id = req.params.forum;
     if ( req.body.topic === '' || req.body.topic === 'undefined' ) {
         res.send('Please enter valid topic.');
@@ -161,8 +161,8 @@ app.post('loggedIn/Forums/forums/:forum/topics', (req,res) => {
 });
 
 
-//Create Post
-app.post('/forums/:forum/topics/:topic/posts', (req,res) => {
+//Create Comment
+app.post('/forums/:forum/topics/:topic/posts', authenticationMiddleware, (req,res) => {
     let forum_id = req.params.forum;
     let topic_id = req.params.topic;
     let body = req.body.body
@@ -187,7 +187,7 @@ app.post('/forums/:forum/topics/:topic/posts', (req,res) => {
 });
 
 // //Create Reply
-app.post('/forums/:forum/topics/:topic/posts/:post/replies', (req,res) => {
+app.post('/forums/:forum/topics/:topic/posts/:post/replies', authenticationMiddleware, (req,res) => {
     let forum_id = req.params.forum;
     let topic_id = req.params.topic;
     let post_id = req.params.post;
@@ -219,18 +219,23 @@ app.get('/forums', (req,res) => {
     db.query(
     'SELECT * FROM forum'
     ).then (function(results) {
-        console.log(results);
         let forums = results;
-        res.render('loggedOut/forums', {forums: forums}); 
+        console.log(results);
+        if(userLoggedIn) {
+            res.render('loggedIn/forums', {forums: forums}); 
+        } else {
+            res.render('loggedOut/forums', {forums: forums});
+        }
     })
     .catch(e => {
         console.log(e)
         res.status(404).send("Something unexpected happened.")
+        
     });
 });
 
 //Get Forum
-app.get('/forums/:forum', (req,res) => {
+app.get('forums/:forum', (req,res) => {
     let forum_id = req.params.forum;
     db.query(
         `SELECT * FROM forum\
@@ -256,12 +261,17 @@ app.get('/forums/:forum/topics', (req,res) => {
         
     ).then (function(results) {
         console.log(results);
-        let topics = results
-        res.render('loggedOut/topics', {topics: topics}); 
+        let topics = results;
+        if(userLoggedIn) {
+            res.render('loggedIn/topics', {topics: topics})
+        } else {
+            res.render('loggedOut/topics', {topics: topics});
+        }
     })
     .catch(e => {
-        console.log(e)
-        res.status(404).send("That forum does not exist.")
+        console.log(e);
+        res.status(404).send("That forum does not exist.");
+        
     });
 });
 
@@ -279,6 +289,7 @@ app.get('/forums/:forum/topics/:topic', (req,res) => {
     .catch(e => {
         console.log(e)
         res.status(404).send("That topic does not exist.")
+        
     });
 });
 
@@ -294,9 +305,13 @@ app.get('/forums/:forum/topics/:topic/posts', (req,res) => {
         WHERE posts.forum_id = '${forum_id}'\
         AND posts.topic_id = '${topic_id}'`
     ).then (function(results) {
-        let posts = results;
-        console.log(posts.length);
-        res.render('topics', {posts: posts}); 
+        let comments = results;
+        console.log(comments);
+        if(userLoggedIn) {
+            res.render('loggedIn/comments', {comments: comments}); 
+        } else {
+            res.render('loggedOut/comments', {comments: comments});
+        }
     })
     .catch(e => {
         console.log(e)
@@ -320,6 +335,7 @@ app.get('/forums/:forum/topics/:topic/posts/:post', (req,res) => {
     .catch(e => {
         console.log(e)
         res.status(404).send("That post does not exist.")
+        
     });
 });
 
@@ -339,6 +355,7 @@ app.get('/forums/:forum/topics/:topic/posts/:post/replies', (req,res) => {
     .catch(e => {
         console.log(e)
         res.status(404).send("That post does not exist.")
+        
     });
 });
 
