@@ -5,8 +5,8 @@
 }
 
 #logo-img {
-    width: 150px; 
-    height: 135px;
+    width: 125px; 
+    height: 115px;
 }
 
 .link-color {
@@ -14,11 +14,6 @@
 }
 
 #login-btn {
-    background-color: rgb(114, 156, 219);
-
-}
-
-#login-out-btn {
     background-color: rgb(114, 156, 219);
 
 }
@@ -37,21 +32,3 @@
     color: black;
 }
 
-
-.card-link {
-    text-decoration: none;
-    color: black;
-}
-
-.card-hover:hover {
-    width: 210px;
-    height: 145px;
-    padding-top: 8px;
-    border: 2px solid rgb(129, 173, 238);
-}
-
-.card-hover {
-    height: 135px;
-    width: 200px;
-    transition: width .4s, height .4s, padding-top .4s;
-}

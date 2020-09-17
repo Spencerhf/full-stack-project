@@ -13,26 +13,12 @@
     color: rgb(114, 156, 219);
 }
 
-#login-btn {
-    background-color: rgb(114, 156, 219);
-
-}
-
-#login-out-btn {
-    background-color: rgb(114, 156, 219);
-
-}
-
-#login-btn a {
-    color: black;
-}
-
 
 #search-submit-btn {
     border: 2px solid rgb(114, 156, 219);
 }
 
-#search-submit-btn:hover {
+.btn:hover {
     background-color: rgb(114, 156, 219);
     color: black;
 }
@@ -54,4 +40,9 @@
     height: 135px;
     width: 200px;
     transition: width .4s, height .4s, padding-top .4s;
+}
+
+.btn {
+    background-color: rgb(114, 156, 219);
+    color: white
 }

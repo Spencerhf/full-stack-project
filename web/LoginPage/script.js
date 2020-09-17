@@ -30,8 +30,9 @@ $( document ).ready(function() {
                     }, function( results ) {
 
                         //alert("you're now logged in")
+                        sessionStorage.setItem( 'username', `${results[0].username}` );
                         sessionStorage.setItem( 'userId', `${results[0].user_id}` );
-                        let userLoggedIn = sessionStorage.getItem( 'userId' );    
+                        //let userLoggedIn = sessionStorage.getItem( 'userId' );    
 
                         username.value = '';
                         password.value = '';
@@ -61,8 +62,9 @@ $( document ).ready(function() {
                         "password": `${password.value}`,
 
                     }, function( results ) {
+                        sessionStorage.setItem( 'username', `${results[0].username}` );
                         sessionStorage.setItem( 'userId', `${results[0].user_id}` );
-                        let userLoggedIn = sessionStorage.getItem( 'userId' );  
+                        //let userLoggedIn = sessionStorage.getItem( 'userId' );  
 
                         console.log(results);
                         username.value = '';
