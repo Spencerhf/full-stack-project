@@ -4,6 +4,8 @@ const promise = require('bluebird');
 const bodyParser = require('body-parser');
 const app = express();
 const session = require('express-session');
+
+app.locals.moment = require('moment');
   
 // Set EJS as templating engine 
 app.set('view engine', 'ejs'); 
@@ -149,7 +151,7 @@ app.post('/forums/:forum/topics', (req,res) => {
         db.query(
             `INSERT INTO topics (topic,forum_id,username_id,date_created,is_deleted)\
             VALUES\ 
-            ('${req.body.topic}',${forum_id},${req.body.username_id},CURRENT_TIMESTAMP, FALSE)\
+            ('${req.body.topic}',${forum_id},${req.body.username_id}, CURRENT_DATE, FALSE)\
             RETURNING *`)
         .then(function (results) {
             res.json(results);
@@ -217,8 +219,7 @@ app.post('/forums/:forum/topics/:topic/posts/:post/replies', (req,res) => {
 //Get All Forums
 app.get('/forums', (req,res) => {
     db.query(
-    'SELECT * FROM forum'
-    ).then (function(results) {
+    `SELECT * FROM forum`).then (function(results) {
         console.log(results);
         let forums = results;
         res.render('loggedOut/forums', {forums: forums}); 
@@ -296,7 +297,7 @@ app.get('/forums/:forum/topics/:topic/posts', (req,res) => {
     ).then (function(results) {
         let posts = results;
         console.log(posts.length);
-        res.render('topics', {posts: posts}); 
+        res.render('comments', {posts: posts}); 
     })
     .catch(e => {
         console.log(e)
