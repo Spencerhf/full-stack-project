@@ -4,6 +4,7 @@ const promise = require('bluebird');
 const bodyParser = require('body-parser');
 const app = express();
 const session = require('express-session');
+
   
 // Set EJS as templating engine 
 app.set('view engine', 'ejs'); 
@@ -47,7 +48,15 @@ app.use(function(req, res, next) {
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static(__dirname + '/web'));
-  
+
+
+//app post email
+app.post('/contactus', (req, res) => {
+    // TODO:
+    // send email here
+    console.log('Data: ', req.body);
+    res.json({ message: 'message received!!!'})
+});  
 
 let userLoggedIn = false;
 
