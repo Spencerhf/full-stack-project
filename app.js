@@ -143,7 +143,7 @@ app.post('/login', (req, res) => {
 app.post('/forums/:forum/topics', authenticationMiddleware, (req,res) => {
     let forum_id = req.params.forum;
     if ( req.body.topic === '' || req.body.topic === 'undefined' ) {
-        res.send('Please enter valid topic.');
+        res.send('Please enter a topic');
     } else if ( req.body.username_id === '' || req.body.username_id === 'undefined' ) {
         res.send('You must be logged in to post a new topic.');
     } else {
@@ -156,7 +156,7 @@ app.post('/forums/:forum/topics', authenticationMiddleware, (req,res) => {
             res.json(results);
         }).catch(e => {
             console.log("Topic already exists");
-            res.status(400).send("An error occurred.")
+            res.status(400).send("An error occurred.");
         });
     };
 });
@@ -309,7 +309,11 @@ app.get('/forums/:forum/topics/:topic/posts', (req,res) => {
     ).then (function(results) {
         let posts = results;
         console.log(posts.length);
-        res.render('/loggedIn/comments.ejs', {posts: posts}); 
+        if(userLoggedIn) {
+            res.render('/loggedIn/comments.ejs', {posts: posts}); 
+        } else {
+            res.render('/loggedOut/comments.ejs', {posts: posts});
+        } 
     })
     .catch(e => {
         console.log(e)
