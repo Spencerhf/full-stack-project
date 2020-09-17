@@ -4,8 +4,6 @@ const promise = require('bluebird');
 const bodyParser = require('body-parser');
 const app = express();
 const session = require('express-session');
-
-app.locals.moment = require('moment');
   
 // Set EJS as templating engine 
 app.set('view engine', 'ejs'); 
@@ -27,7 +25,7 @@ const config = {
     host: 'localhost',
     port: 5432,
     database: 'forum_project',
-    user: 'spencer'
+    user: 'zac-evans'
 };
 
 app.use(session({
