@@ -1,4 +1,5 @@
 const express = require('express');
+const sendMail = require('./mail.js')
 const bcrypt = require('bcrypt');
 const promise = require('bluebird');
 const bodyParser = require('body-parser');
@@ -52,10 +53,16 @@ app.use(express.static(__dirname + '/web'));
 
 //app post email
 app.post('/contactus', (req, res) => {
-    // TODO:
-    // send email here
+    const { subject, email, message} = req.body;
     console.log('Data: ', req.body);
-    res.json({ message: 'message received!!!'})
+    console.log(subject, email, message);
+    sendMail(email, subject, message, function(err, data){
+            if (err) {
+                res.status(500).json({ message: data, error: err});
+            } else {
+                res.json({ message: 'Email sent'});
+            }
+    });
 });  
 
 let userLoggedIn = false;

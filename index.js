@@ -1,4 +1,5 @@
 const express = require('express');
+const sendMail = require('/mail')
 const app = express();
 const promise = require('bluebird');
 const portNumber = process.env.PORT || 3000;
