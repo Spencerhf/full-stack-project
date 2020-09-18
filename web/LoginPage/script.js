@@ -2,6 +2,8 @@ $( document ).ready(function() {
 
                             //The login function
     function login () {
+        sessionStorage.clear();
+
                 // login variables
         let username = document.getElementById('username');
         let password = document.getElementById('password');
@@ -25,14 +27,18 @@ $( document ).ready(function() {
                         "username": `${username.value}`,
                         "password": `${password.value}`
 
-                    }, function( req, res ) {
-                        alert("you're now logged in")
-    
+                    }, function( results ) {
+
+                        //alert("you're now logged in")
+                        sessionStorage.setItem( 'username', `${results[0].username}` );
+                        sessionStorage.setItem( 'userId', `${results[0].user_id}` );
+                        //let userLoggedIn = sessionStorage.getItem( 'userId' );    
+
                         username.value = '';
                         password.value = '';
 
-                        window.location = 'index.html';
-                        
+                        window.location = '/forums';
+
                     }).fail(function() {
                         alert('No account found with that username or incorrect password');
                     })
@@ -56,6 +62,10 @@ $( document ).ready(function() {
                         "password": `${password.value}`,
 
                     }, function( results ) {
+                        sessionStorage.setItem( 'username', `${results[0].username}` );
+                        sessionStorage.setItem( 'userId', `${results[0].user_id}` );
+                        //let userLoggedIn = sessionStorage.getItem( 'userId' );  
+
                         console.log(results);
                         username.value = '';
                         email.value = '';
@@ -63,7 +73,9 @@ $( document ).ready(function() {
                         lastName.value = '';
                         password.value = '';
 
-                        window.location = 'index.html';
+                        
+                        window.location = '/forums';
+
                     })  
                 }
             }
