@@ -405,6 +405,26 @@ app.get('/forums/:forum/topics/:topic/posts/:post/replies/:reply', (req,res) => 
     });
 });
 
+//About Us
+app.get('/about-us', function (req,res) {
+        if(userLoggedIn) {
+                res.render('loggedIn/about-us')
+            } else {
+                res.render('loggedOut/about-us')
+            }
+        })
+    
+//About Us
+app.get('/contact-us', function (req,res) {
+    if(userLoggedIn) {
+            res.render('loggedIn/contact-us')
+        } else {
+            res.render('loggedOut/contact-us')
+        }
+    })    
+
+
+
 
 //Get Dashboard
 app.get('/dashboard', authenticationMiddleware, function (req, res) {
