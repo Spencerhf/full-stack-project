@@ -62,6 +62,15 @@ function authenticationMiddleware(req, res, next) {
 }
 
 
+//Reset user boolean
+app.get('/', ( req, res ) => {
+
+    userLoggedIn = false;
+    res.redirect('/forums');
+
+})
+
+
 //Register New User
 
 app.post('/register', (req, res) => {
