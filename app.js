@@ -214,25 +214,27 @@ app.post('/forums/:forum/topics/:topic/posts/:post/replies', authenticationMiddl
     };
 });
 
-//Get All Forums
-app.get('/', (req,res) => {
-    db.query(
-    `SELECT * FROM forum`).then (function(results) {
-        console.log(results);
-        let forums = results;
-        console.log(results);
-        if(userLoggedIn) {
-            res.render('loggedIn/forums', {forums: forums}); 
-        } else {
-            res.render('loggedOut/forums', {forums: forums});
-        }
-    })
-    .catch(e => {
-        console.log(e)
-        res.status(404).send("Something unexpected happened.")
+// //Get All Forums
+// app.get('/', (req,res) => {
+//     db.query(
+//     `SELECT * FROM forum`).then (function(results) {
+//         console.log(results);
+//         let forums = results;
+//         console.log(results);
+//         if(userLoggedIn) {
+//             console.log('logged in from /')
+//             res.render('loggedIn/forums', {forums: forums}); 
+//         } else {
+//             console.log('logged out from /')
+//             res.render('loggedOut/forums', {forums: forums});
+//         }
+//     })
+//     .catch(e => {
+//         console.log(e)
+//         res.status(404).send("Something unexpected happened.")
         
-    });
-});
+//     });
+// });
 
 //Get All Forums
 app.get('/forums', (req,res) => {
@@ -242,8 +244,10 @@ app.get('/forums', (req,res) => {
         let forums = results;
         console.log(results);
         if(userLoggedIn) {
+            console.log('logged in from /forums')
             res.render('loggedIn/forums', {forums: forums}); 
         } else {
+            console.log('logged out from /forums')
             res.render('loggedOut/forums', {forums: forums});
         }
     })
@@ -293,7 +297,7 @@ app.get('/forums/:forum/topics', (req,res) => {
             if (topics[1]) {
                 res.render('loggedOut/topics', {topics: topics})
             } else {
-                res.render('loggedIn/noTopics', {topics: topics})
+                res.render('loggedOut/noTopics', {topics: topics})
             }
         }
     })
@@ -335,7 +339,6 @@ app.get('/forums/:forum/topics/:topic/posts', (req,res) => {
         AND posts.topic_id = '${topic_id}'`
     ).then (function(results) {
         let posts = results;
-        console.log(posts.length);
         if(userLoggedIn) {
             res.render('loggedIn/comments', {posts: posts}); 
         } else {
