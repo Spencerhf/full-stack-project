@@ -22,7 +22,7 @@
  
   <div class="container-fluid">
     <div class="row vh-100" id="pageRow">
-
+    
       <!-- The navigation bar -->
       <div id="nav-column" class="col-12 col-lg-3 bg-dark">
         <nav class="flex-lg-column navbar bg-dark navbar-dark navbar-expand-lg justify-content-around">
@@ -48,7 +48,9 @@
       
 
          <!-- Forum area -->
-    <div class="col-12 col-lg-9">    
+    <div class="col-12 col-lg-9">
+      <h1 class='text-center mt-4'>TALK ABOUT IT.</h1>
+      <p class='text-center font-weight-bolder text-secondary' style="font-size: larger">A simple and clean message board utilizing html, css, javascript, jquery, node.js, postgresql, express.js, and ejs</p>      
       <div id="forum-container" class="d-flex flex-row flex-wrap mx-auto" style="width: 90%;">
         <% for(var i=0; i<forums.length; i++){ %>
           <a href="/forums/<%= forums[i].forum_id %>/topics" id="<%= forums[i].forum_id %>" onclick="forumCardClicked(this.id)" class="card-link d-block m-3 mx-auto">

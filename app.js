@@ -220,10 +220,8 @@ app.get('/', (req,res) => {
     `SELECT * FROM forum`).then (function(results) {
         let forums = results;
         if(userLoggedIn) {
-            console.log('logged in from /')
             res.render('loggedIn/forums', {forums: forums}); 
         } else {
-            console.log('logged out from /')
             res.render('loggedOut/forums', {forums: forums});
         }
     })
