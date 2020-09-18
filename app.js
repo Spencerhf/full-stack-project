@@ -214,7 +214,25 @@ app.post('/forums/:forum/topics/:topic/posts/:post/replies', authenticationMiddl
     };
 });
 
-
+//Get All Forums
+app.get('/', (req,res) => {
+    db.query(
+    `SELECT * FROM forum`).then (function(results) {
+        console.log(results);
+        let forums = results;
+        console.log(results);
+        if(userLoggedIn) {
+            res.render('loggedIn/forums', {forums: forums}); 
+        } else {
+            res.render('loggedOut/forums', {forums: forums});
+        }
+    })
+    .catch(e => {
+        console.log(e)
+        res.status(404).send("Something unexpected happened.")
+        
+    });
+});
 
 //Get All Forums
 app.get('/forums', (req,res) => {
@@ -259,15 +277,24 @@ app.get('/forums/:forum/topics', (req,res) => {
         `SELECT * FROM forum\
         INNER JOIN topics ON topics.forum_id = forum.forum_id\
         LEFT OUTER JOIN users ON topics.username_id = users.user_id\
-        WHERE topics.forum_id = ${forum_id} AND forum.forum_id = ${forum_id}`
+        WHERE topics.forum_id = ${forum_id} AND forum.forum_id = ${forum_id}
+        ORDER BY (topics.date_created) DESC`
         
     ).then (function(results) {
         console.log(results);
         let topics = results;
         if(userLoggedIn) {
-            res.render('loggedIn/topics', {topics: topics})
+            if (topics[1]) {
+                res.render('loggedIn/topics', {topics: topics})
+            } else {
+                res.render('loggedIn/noTopics', {topics: topics})
+            }
         } else {
-            res.render('loggedOut/topics', {topics: topics});
+            if (topics[1]) {
+                res.render('loggedOut/topics', {topics: topics})
+            } else {
+                res.render('loggedIn/noTopics', {topics: topics})
+            }
         }
     })
     .catch(e => {
@@ -310,9 +337,9 @@ app.get('/forums/:forum/topics/:topic/posts', (req,res) => {
         let posts = results;
         console.log(posts.length);
         if(userLoggedIn) {
-            res.render('/loggedIn/comments.ejs', {posts: posts}); 
+            res.render('loggedIn/comments', {posts: posts}); 
         } else {
-            res.render('/loggedOut/comments.ejs', {posts: posts});
+            res.render('loggedOut/comments', {posts: posts});
         } 
     })
     .catch(e => {
