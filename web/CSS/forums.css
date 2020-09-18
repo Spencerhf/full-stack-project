@@ -80,4 +80,22 @@ h5 {
     
 }
 
+#form-div {
+    padding: 25px;
+}
+
+.text-fields {
+    max-width: 500px;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+#btn-div {
+    margin: auto;
+}
+
+#loginBtn {
+    display: none;
+}
+
 
