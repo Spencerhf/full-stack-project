@@ -214,40 +214,34 @@ app.post('/forums/:forum/topics/:topic/posts/:post/replies', authenticationMiddl
     };
 });
 
-// //Get All Forums
-// app.get('/', (req,res) => {
-//     db.query(
-//     `SELECT * FROM forum`).then (function(results) {
-//         console.log(results);
-//         let forums = results;
-//         console.log(results);
-//         if(userLoggedIn) {
-//             console.log('logged in from /')
-//             res.render('loggedIn/forums', {forums: forums}); 
-//         } else {
-//             console.log('logged out from /')
-//             res.render('loggedOut/forums', {forums: forums});
-//         }
-//     })
-//     .catch(e => {
-//         console.log(e)
-//         res.status(404).send("Something unexpected happened.")
+//Get All Forums
+app.get('/', (req,res) => {
+    db.query(
+    `SELECT * FROM forum`).then (function(results) {
+        let forums = results;
+        if(userLoggedIn) {
+            console.log('logged in from /')
+            res.render('loggedIn/forums', {forums: forums}); 
+        } else {
+            console.log('logged out from /')
+            res.render('loggedOut/forums', {forums: forums});
+        }
+    })
+    .catch(e => {
+        console.log(e)
+        res.status(404).send("Something unexpected happened.")
         
-//     });
-// });
+    });
+});
 
 //Get All Forums
 app.get('/forums', (req,res) => {
     db.query(
     `SELECT * FROM forum`).then (function(results) {
-        console.log(results);
         let forums = results;
-        console.log(results);
-        if(userLoggedIn) {
-            console.log('logged in from /forums')
+        if(userLoggedIn) {          
             res.render('loggedIn/forums', {forums: forums}); 
         } else {
-            console.log('logged out from /forums')
             res.render('loggedOut/forums', {forums: forums});
         }
     })
@@ -285,7 +279,6 @@ app.get('/forums/:forum/topics', (req,res) => {
         ORDER BY (topics.date_created)`
         
     ).then (function(results) {
-        console.log(results);
         let topics = results;
         if(userLoggedIn) {
             if (topics[1]) {
