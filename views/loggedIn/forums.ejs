@@ -24,7 +24,7 @@
           <nav class="flex-column navbar navbar-expand-lg">
             <a href="/forums"><img id="logo-img" class="mt-4" src="/images/forum-logo.png" alt="Logo" style="max-width: 160px"></a>
               <div id="navbarNav">
-                <ul class="mt-4 text-center flex-column navbar-nav">
+                <ul class="mt-4 text-center flex-column navbar-nav" style="font-size: large;">
                   <li class="mb-2 mt-2 nav-item2">
                     <p style="color: white;" id="displayUsername"></p>
                   </li>
@@ -52,10 +52,15 @@
             <div class="col">
 
               <!-- Forum area -->
-            <div id="forum-container" class="d-flex flex-row flex-wrap mx-auto" style="width: 90%;">
+              <div id="welcomeText" class="mt-4 text-center">
+                <h2>Welcome to Talk About it</h2>
+                <p>A place where people can ask question or just talk about life.</p>
+              </div>
+
+            <div id="forum-container" class="mt-3 d-flex flex-row flex-wrap mx-auto" style="width: 90%;">
                 <% for(var i=0; i<forums.length; i++){ %>
                 <a href="/forums/<%= forums[i].forum_id %>/topics" id="<%= forums[i].forum_id %>" onclick="forumCardClicked(this.id)" class="card-link d-block m-3 mx-auto">
-                    <div class="card-hover card">
+                   <div class="card-hover card">
                         <div class="card-body text-center">
                             <h1 class="icon"><%- forums[i].icons %></h1>
                             <h4><%= forums[i].name %></h4>

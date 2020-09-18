@@ -4,9 +4,6 @@ const promise = require('bluebird');
 const bodyParser = require('body-parser');
 const app = express();
 const session = require('express-session');
-
-const moment = require('moment');
-app.locals.moment = moment;
   
 // Set EJS as templating engine 
 app.set('view engine', 'ejs'); 
@@ -35,7 +32,7 @@ app.use(session({
     secret: process.env.SECRET_KEY || 'dev',
     resave: false,
     saveUninitialized: false,
-    cookie: {maxAge: 600000}
+    cookie: {maxAge: 60000}
   }));
 
 // Load and initialize pg-promise:
@@ -156,9 +153,6 @@ app.post('/forums/:forum/topics', authenticationMiddleware, (req,res) => {
             ('${req.body.topic}',${forum_id},${req.body.username_id}, CURRENT_TIMESTAMP, FALSE)\
             RETURNING *`)
         .then(function (results) {
-            console.log('--------');
-            console.log(results);
-            console.log('--------');
 
             if(req.body.newPost) {
                 db.query(`INSERT INTO posts (body, is_deleted, forum_id, topic_id, username_id,date_created)\
@@ -178,7 +172,7 @@ app.post('/forums/:forum/topics', authenticationMiddleware, (req,res) => {
 });
 
 
-//Create Posts
+//Create Post
 app.post('/forums/:forum/topics/:topic/posts', authenticationMiddleware, (req,res) => {
     let forum_id = req.params.forum;
     let topic_id = req.params.topic;
@@ -230,7 +224,25 @@ app.post('/forums/:forum/topics/:topic/posts/:post/replies', authenticationMiddl
     };
 });
 
-
+//Get All Forums
+app.get('/', (req,res) => {
+    db.query(
+    `SELECT * FROM forum`).then (function(results) {
+        console.log(results);
+        let forums = results;
+        console.log(results);
+        if(userLoggedIn) {
+            res.render('loggedIn/forums', {forums: forums}); 
+        } else {
+            res.render('loggedOut/forums', {forums: forums});
+        }
+    })
+    .catch(e => {
+        console.log(e)
+        res.status(404).send("Something unexpected happened.")
+        
+    });
+});
 
 //Get All Forums
 app.get('/forums', (req,res) => {
@@ -275,15 +287,24 @@ app.get('/forums/:forum/topics', (req,res) => {
         `SELECT * FROM forum\
         INNER JOIN topics ON topics.forum_id = forum.forum_id\
         LEFT OUTER JOIN users ON topics.username_id = users.user_id\
-        WHERE topics.forum_id = ${forum_id} AND forum.forum_id = ${forum_id}`
+        WHERE topics.forum_id = ${forum_id} AND forum.forum_id = ${forum_id}
+        ORDER BY (topics.date_created) DESC`
         
     ).then (function(results) {
         console.log(results);
         let topics = results;
         if(userLoggedIn) {
-            res.render('loggedIn/topics', {topics: topics})
+            if (topics[1]) {
+                res.render('loggedIn/topics', {topics: topics})
+            } else {
+                res.render('loggedIn/noTopics', {topics: topics})
+            }
         } else {
-            res.render('loggedOut/topics', {topics: topics});
+            if (topics[1]) {
+                res.render('loggedOut/topics', {topics: topics})
+            } else {
+                res.render('loggedOut/noTopics', {topics: topics})
+            }
         }
     })
     .catch(e => {
@@ -311,46 +332,31 @@ app.get('/forums/:forum/topics/:topic', (req,res) => {
     });
 });
 
-
-app.get('/forums/:forum/topicname', ( req, res ) => {
-
-    
-
-})
-
-
-
 //Get All Posts on Topic
 app.get('/forums/:forum/topics/:topic/posts', (req,res) => {
     let forum_id = req.params.forum;
     let topic_id = req.params.topic;
     db.query(
-
         `SELECT * FROM posts\
         LEFT JOIN forum ON posts.forum_id = forum.forum_id\
         LEFT JOIN topics ON topics.topic_id = posts.topic_id\
         LEFT JOIN users ON users.user_id = posts.username_id\
         WHERE posts.forum_id = '${forum_id}'\
         AND posts.topic_id = '${topic_id}'`
-
     ).then (function(results) {
         let posts = results;
         console.log(posts.length);
-
         if(userLoggedIn) {
-            res.render('loggedIn/comments.ejs', {posts: posts}); 
+            res.render('loggedIn/comments', {posts: posts}); 
         } else {
-            res.render('loggedOut/comments.ejs', {posts: posts});
+            res.render('loggedOut/comments', {posts: posts});
         } 
-
     })
     .catch(e => {
         console.log(e)
         res.status(404).send("That topic does not exist.")
     });
 });
-
-
 
 //Get Post
 app.get('/forums/:forum/topics/:topic/posts/:post', (req,res) => {
@@ -383,7 +389,7 @@ app.get('/forums/:forum/topics/:topic/posts/:post/replies', (req,res) => {
         AND topic_id = '${topic_id}'\
         AND post_id = '${post_id}'`
     ).then (function(results) {
-        res.json(results);
+         res.json(results) 
     })
     .catch(e => {
         console.log(e)
@@ -415,13 +421,8 @@ app.get('/forums/:forum/topics/:topic/posts/:post/replies/:reply', (req,res) => 
 
 
 //Get Dashboard
-app.get('/dashboard', function (req, res) {
-    //res.send('Hello, ' + req.username)
-    db.query(
-        "SELECT * FROM posts"
-    ).then(function(posts) {
-        res.render('/loggedIn/posts.ejs', {posts: posts});
-    })
+app.get('/dashboard', authenticationMiddleware, function (req, res) {
+    res.send('Hello, ' + req.username)
 })
 
 

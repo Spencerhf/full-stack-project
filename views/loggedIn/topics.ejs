@@ -21,7 +21,7 @@
           <nav class="flex-column navbar navbar-expand-lg">
               <a href="/forums"><img id="logo-img" class="mt-4" src="/images/forum-logo.png" alt="Logo" style="max-width: 160px"></a>
               <div id="navbarNav">
-                <ul class="mt-4 text-center flex-column navbar-nav">
+                <ul class="mt-4 text-center flex-column navbar-nav" style="font-size: large;">
                   <li class="mb-2 mt-2 nav-item2">
                     <p style="color: white;" id="displayUsername"></p>
                   </li>
@@ -53,8 +53,8 @@
               <form class="mx-auto mb-4" style="max-width: 500px;">
                 <div class="form-group">
                   <label class="text-center">Don't see a topic for you? Go ahead and create one!</label>
-                  <input class="mb-2 form-control" id="newTopic">
-                  <textarea class="w-100 form-control" id="topicBody" rows="3"></textarea>
+                  <input class="mb-2 form-control" placeholder="Topic..." id="newTopic">
+                  <textarea class="w-100 form-control" placeholder="A question..." id="topicBody" rows="3"></textarea>
                 </div>
                 <button type="submit" id="newTopicBtn" class="btn btn-primary">create topic</button>
               </form>
