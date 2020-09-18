@@ -52,7 +52,7 @@
             <div class='w-100'>
               <div class='row d-flex justify-content-between'>
                 <h1 class='comments-header col-8'>"<%= posts[0].topic %>"</h1>
-                <a href="/forums/<%= posts[0].forum_id %>/topics" class='btn col-4 text-center pb-0 mb-1' style='max-width: 200px;'><h6>Back to <br><%= posts[0].name %></h6></a> 
+                <a href="/forums/<%= posts[0].forum_id %>/topics" class='btn col-4 text-center my-auto' style='max-width: 200px;'><h6>Back to <br><%= posts[0].name %></h6></a> 
               </div> 
               <h5 class="pl-2">Posted in </h5><a class='h5' href="/forums/<%= posts[0].forum_id %>/topics"><%= posts[0].name %></a> <h5>by </h5><span style="color: black" class='h5'><%= posts[0].username %></span></h5>
               <% for(var i=0; i<posts.length; i++){ %>

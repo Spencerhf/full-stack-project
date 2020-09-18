@@ -52,17 +52,20 @@
         
         <div class="flex-nowrap">
             <div>
-              <h1 class="forum-header" id="<%= topics[0].forum_id %>" class="forum-title text-center"><%- topics[0].icons %> <%= topics[0].name %></h1>
+              <h1 class="forum-header mt-4" id="<%= topics[0].forum_id %>" class="forum-title text-center"><%- topics[0].icons %> <%= topics[0].name %></h1>
     
       
       
            <!-- Create a new topic -->
-              <form class="mx-auto mb-4" style="max-width: 300px;">
+              <form class="mx-auto mb-4" style="max-width: 400px;">
                 <div class="form-group">
                   <label class="text-center">Don't see a topic for you? Go ahead and create one!</label>
                   <input class="form-control" id="newTopic">
                 </div>
-                <button type="submit" id="newTopicBtn" class="btn btn-primary">create topic</button>
+               
+                <button type="submit" id="newTopicBtn" class="btn">create topic</button>
+               
+                
               </form>
               
               <!-- Displaying all topics -->

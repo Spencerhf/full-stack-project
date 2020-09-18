@@ -155,7 +155,6 @@ app.post('/forums/:forum/topics', authenticationMiddleware, (req,res) => {
         .then(function (results) {
             res.json(results);
         }).catch(e => {
-            console.log("Topic already exists");
             res.status(400).send("An error occurred.");
         });
     };
