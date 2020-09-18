@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     
-    <!-- <script src="/Homepage/script.js"></script> -->
+
     <script src="https://kit.fontawesome.com/d00b451a0b.js" crossorigin="anonymous"></script>
 
 </head>
@@ -22,23 +22,20 @@
     <div class="container-fluid">
       <div id="nav-column" class="vh-100 fixed-top col bg-dark" style="min-width: 200px; max-width: 200px;">
           <nav class="flex-column navbar navbar-expand-lg">
-              <img id="logo-img" class="mt-4" src="/images/forum-logo.png" alt="Logo">
+            <a href="/forums"><img id="logo-img" class="mt-4" src="/images/forum-logo.png" alt="Logo" style="max-width: 160px"></a>
               <div id="navbarNav">
                 <ul class="mt-4 text-center flex-column navbar-nav">
                   <li class="mb-4 nav-item">
-                    <a class="nav-link link-color" href="#">Home</a>
+                    <a class="nav-link link-color" href="/forums">Home</a>
                   </li>
                   <li class="mb-4 nav-item">
-                    <a class="nav-link link-color" href="#">About Us</a>
+                    <a class="nav-link link-color" href="/About us/index.html">About Us</a>
                   </li>
                   <li class="mb-4 nav-item2">
-                    <a class="nav-link link-color" href="#">Contact Us</a>
-                  </li>
-                  <li class="mb-4 nav-item2">
-                    <a class="nav-link link-color" href="#"></a>
+                    <a class="nav-link link-color" href="/Contact us/index.html">Contact Us</a>
                   </li>
                   <li class="mb-4 nav-item">
-                    <button id="login-btn" class="btn"><a href="/LoginPage/index.html">Login/Sign Up</a></button>
+                    <button id="login-btn" class="btn"><a href="/LoginPage/index.html" style="color: black;">Login/Sign Up</a></button>
                   </li>
                 </ul>
               </div>
@@ -50,12 +47,6 @@
 
             <!-- Middle column -->
             <div class="col">
-              
-              <!-- Middle search bar -->
-              <form class="form-inline mt-4 my-2 w-100 justify-content-center">
-                <input class="w-75 form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button id="search-submit-btn" class="link-color btn my-2 my-sm-0" type="submit">Search</button>
-              </form>
 
               <!-- Forum area -->
             <div id="forum-container" class="d-flex flex-row flex-wrap mx-auto" style="width: 90%;">
@@ -70,13 +61,7 @@
                 </a>
                 <% } %>
             </div>
-
-            </div>
-
-            <!-- Discover / Top forum column -->
-            <div id="top-forum-column" class="col bg-dark" style="max-width: 350px;">
-              <h2 class="mt-4 link-color text-center">Discover</h2>
-            </div>
+          </div>
         </div>
     </div>
     

@@ -5,7 +5,8 @@ const bodyParser = require('body-parser');
 const app = express();
 const session = require('express-session');
 
-app.locals.moment = require('moment');
+const moment = require('moment');
+app.locals.moment = moment;
   
 // Set EJS as templating engine 
 app.set('view engine', 'ejs'); 
@@ -34,7 +35,7 @@ app.use(session({
     secret: process.env.SECRET_KEY || 'dev',
     resave: false,
     saveUninitialized: false,
-    cookie: {maxAge: 60000}
+    cookie: {maxAge: 600000}
   }));
 
 // Load and initialize pg-promise:
@@ -152,10 +153,23 @@ app.post('/forums/:forum/topics', authenticationMiddleware, (req,res) => {
         db.query(
             `INSERT INTO topics (topic,forum_id,username_id,date_created,is_deleted)\
             VALUES\ 
-            ('${req.body.topic}',${forum_id},${req.body.username_id}, CURRENT_DATE, FALSE)\
+            ('${req.body.topic}',${forum_id},${req.body.username_id}, CURRENT_TIMESTAMP, FALSE)\
             RETURNING *`)
         .then(function (results) {
-            res.json(results);
+            console.log('--------');
+            console.log(results);
+            console.log('--------');
+
+            if(req.body.newPost) {
+                db.query(`INSERT INTO posts (body, is_deleted, forum_id, topic_id, username_id,date_created)\
+                VALUES\ 
+                ('${req.body.newPost}', FALSE, ${forum_id}, ${results[0].topic_id}, ${req.body.username_id},CURRENT_TIMESTAMP)\
+                RETURNING *`).then(function(newPost) {
+                    res.json(newPost);
+                })
+            } else {
+                res.json(results);
+            }
         }).catch(e => {
             console.log("Topic already exists");
             res.status(400).send("An error occurred.");
@@ -164,7 +178,7 @@ app.post('/forums/:forum/topics', authenticationMiddleware, (req,res) => {
 });
 
 
-//Create Comment
+//Create Posts
 app.post('/forums/:forum/topics/:topic/posts', authenticationMiddleware, (req,res) => {
     let forum_id = req.params.forum;
     let topic_id = req.params.topic;
@@ -297,31 +311,46 @@ app.get('/forums/:forum/topics/:topic', (req,res) => {
     });
 });
 
+
+app.get('/forums/:forum/topicname', ( req, res ) => {
+
+    
+
+})
+
+
+
 //Get All Posts on Topic
 app.get('/forums/:forum/topics/:topic/posts', (req,res) => {
     let forum_id = req.params.forum;
     let topic_id = req.params.topic;
     db.query(
+
         `SELECT * FROM posts\
         LEFT JOIN forum ON posts.forum_id = forum.forum_id\
         LEFT JOIN topics ON topics.topic_id = posts.topic_id\
         LEFT JOIN users ON users.user_id = posts.username_id\
         WHERE posts.forum_id = '${forum_id}'\
         AND posts.topic_id = '${topic_id}'`
+
     ).then (function(results) {
         let posts = results;
         console.log(posts.length);
+
         if(userLoggedIn) {
-            res.render('/loggedIn/comments.ejs', {posts: posts}); 
+            res.render('loggedIn/comments.ejs', {posts: posts}); 
         } else {
-            res.render('/loggedOut/comments.ejs', {posts: posts});
+            res.render('loggedOut/comments.ejs', {posts: posts});
         } 
+
     })
     .catch(e => {
         console.log(e)
         res.status(404).send("That topic does not exist.")
     });
 });
+
+
 
 //Get Post
 app.get('/forums/:forum/topics/:topic/posts/:post', (req,res) => {
@@ -354,7 +383,7 @@ app.get('/forums/:forum/topics/:topic/posts/:post/replies', (req,res) => {
         AND topic_id = '${topic_id}'\
         AND post_id = '${post_id}'`
     ).then (function(results) {
-         res.json(results) 
+        res.json(results);
     })
     .catch(e => {
         console.log(e)
@@ -386,8 +415,13 @@ app.get('/forums/:forum/topics/:topic/posts/:post/replies/:reply', (req,res) => 
 
 
 //Get Dashboard
-app.get('/dashboard', authenticationMiddleware, function (req, res) {
-    res.send('Hello, ' + req.username)
+app.get('/dashboard', function (req, res) {
+    //res.send('Hello, ' + req.username)
+    db.query(
+        "SELECT * FROM posts"
+    ).then(function(posts) {
+        res.render('/loggedIn/posts.ejs', {posts: posts});
+    })
 })
 
 
