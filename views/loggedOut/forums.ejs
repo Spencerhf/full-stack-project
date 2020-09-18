@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum Project</title>
 
+    
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="/CSS/forums.css">
 
@@ -17,58 +19,51 @@
 
 </head>
 <body class="bg-light">
+ 
+  <div class="container-fluid">
+    <div class="row vh-100">
 
-    <!-- The navigation bar -->
-    <div class="container-fluid">
-      <div class="row vh-100">
-          <div id="nav-column" class="col-12 col-md-3 bg-dark">
-            <nav class="flex-column navbar navbar-collapse navbar-expand-lg">
-              <img id="logo-img" class="mt-4" src="/images/forum-logo.png" href="/forums" alt="Logo" style="max-width: 160px">
-              <div id="navbarNav">
-                <ul class="mt-4 text-center flex-column navbar-nav">
-                  <li class="mb-4 nav-item">
-                    <a class="nav-link link-color" href="/forums">Home</a>
-                  </li>
-                  <li class="mb-4 nav-item">
-                    <a class="nav-link link-color" href="/web/AboutUs/index.html">About Us</a>
-                  </li>
-                  <li class="mb-4 nav-item2">
-                    <a class="nav-link link-color" href="/web/ContactUs/index.html">Contact Us</a>
-                  </li>
-                  <li class="mb-4 nav-item">
-                    <button href="/forums" id="login-out-btn" class="btn btn-bg- btn-lg">Log Out</button>
-                  </li>
-                </ul>
-              </div>
-            </nav>
+      <!-- The navigation bar -->
+      <div id="nav-column" class="col-12 col-lg-3 bg-dark">
+        <nav class="flex-lg-column navbar bg-dark navbar-dark navbar-expand-lg justify-content-around">
+          <div>
+            <button class="navbar-toggler" style="visibility: hidden;">
+            <span class="navbar-toggler-icon"></span>
+          </button>
         </div>
+          <img id="logo-img" class="mt-4" src="/images/forum-logo.png" href="/forums" alt="Logo">
+          <button class="navbar-toggler"  type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div id="navbarNav" class="collapse navbar-collapse">
+            <div class="mt-4 text-center flex-column navbar-nav">
+                <a class="nav-link nav-item active mb-4 link-color" href="/forums">Home</a>
+                <a class="nav-link nav-item mb-4 link-color" href="/web/AboutUs/index.html">About Us</a>
+                <a class="nav-link mb-4 nav-item link-color" href="/web/ContactUs/index.html">Contact Us</a>
+                <a href="/LoginPage/index.html"><button role="button" id="login-btn" class="btn mx-auto btn-lg">Login/Sign Up</button></a>
+            </div>
+          </div>
+        </nav>
+    </div>
       
 
-        <!-- The middle and right columns -->
-
-            <!-- Middle column -->
-            <div class="col-12 col-md-9">
-              
-
-              <!-- Forum area -->
-            <div id="forum-container" class="d-flex flex-row flex-wrap mx-auto" style="width: 90%;">
-                <% for(var i=0; i<forums.length; i++){ %>
-                <a href="/forums/<%= forums[i].forum_id %>/topics" id="<%= forums[i].forum_id %>" onclick="forumCardClicked(this.id)" class="card-link d-block m-3 mx-auto">
-                    <div class="card-hover card">
-                        <div class="card-body text-center">
-                            <h1 class="icon"><%- forums[i].icons %></h1>
-                            <h4><%= forums[i].name %></h4>
-                        </div>
-                    </div>
-                </a>
-                <% } %>
+         <!-- Forum area -->
+    <div class="col-12 col-lg-9">    
+      <div id="forum-container" class="d-flex flex-row flex-wrap mx-auto" style="width: 90%;">
+        <% for(var i=0; i<forums.length; i++){ %>
+          <a href="/forums/<%= forums[i].forum_id %>/topics" id="<%= forums[i].forum_id %>" onclick="forumCardClicked(this.id)" class="card-link d-block m-3 mx-auto">
+            <div class="card-hover card">
+              <div class="card-body text-center">
+                <h1 class="icon"><%- forums[i].icons %></h1>
+                <h4><%= forums[i].name %></h4>
+              </div>
             </div>
-
-            </div>
-
-             
+          </a>
+          <% } %>
         </div>
+      </div>     
     </div>
+  </div>
     
 
 </body>

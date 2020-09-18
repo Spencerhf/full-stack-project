@@ -1,6 +1,6 @@
-@media only screen and (max-width: 1100px) {
-    #top-forum-column {
-        display: none;
+@media only screen and (max-width: 992px) {
+    #pageRow{
+        max-height: 400px;
     }
 }
 
@@ -40,4 +40,8 @@
 .btn {
     background-color: rgb(114, 156, 219);
     color: white
+}
+
+#login-out-btn {
+    max-width: 200px;
 }

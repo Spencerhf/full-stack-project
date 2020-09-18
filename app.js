@@ -278,7 +278,7 @@ app.get('/forums/:forum/topics', (req,res) => {
         INNER JOIN topics ON topics.forum_id = forum.forum_id\
         LEFT OUTER JOIN users ON topics.username_id = users.user_id\
         WHERE topics.forum_id = ${forum_id} AND forum.forum_id = ${forum_id}
-        ORDER BY (topics.date_created) DESC`
+        ORDER BY (topics.date_created)`
         
     ).then (function(results) {
         console.log(results);
