@@ -1,1 +1,6 @@
-git rm --cached .DS_Store
+.DS_Store
+/node_modules
+mail.js
+package.json
+package-lock.json
+

@@ -1,0 +1,101 @@
+@media only screen and (max-width: 992px) {
+    #pageRow{
+        max-height: 400px;
+    }
+}
+
+#logo-img {
+    width: 150px; 
+    height: 135px;
+}
+
+.link-color {
+    color: rgb(114, 156, 219);
+}
+
+.btn:hover {
+    background-color: rgb(114, 156, 219);
+    color: black;
+}
+
+
+.card-link {
+    text-decoration: none;
+    color: black;   
+}
+
+.card-hover:hover {
+    width: 210px;
+    height: 145px;
+    padding-top: 8px;
+    border: 2px solid rgb(129, 173, 238);
+}
+
+.card-hover {
+    height: 135px;
+    width: 200px;
+    transition: width .4s, height .4s, padding-top .4s;
+    box-shadow: 10px 10px 5px grey;
+}
+
+.btn {
+    background-color: rgb(114, 156, 219);
+    color: white
+}
+
+#login-out-btn {
+    max-width: 200px;
+}
+
+body {
+    background-image: url('/images/bg.jpg')
+}
+
+h5 {
+    color: grey;
+    display: inline;
+}
+
+.forum-header {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    font-size: 50px;
+}
+
+.comments-header {
+    font-family: 'Poppins', sans-serif;
+    font-size: 40px;
+}
+
+.nav-item {
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+#displayUsername {
+    font-size: 25px;
+    font-family: 'Poppins', sans-serif;
+    background-color: rgb(0, 7, 19);
+    color: white;
+    
+}
+
+#form-div {
+    padding: 25px;
+}
+
+.text-fields {
+    max-width: 500px;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+#btn-div {
+    margin: auto;
+}
+
+#loginBtn {
+    display: none;
+}
+
+
