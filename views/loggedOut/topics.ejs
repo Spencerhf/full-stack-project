@@ -50,8 +50,12 @@
       <div id="topic-list" class="col-12 col-lg-9">
         
         <div class="flex-nowrap">
-            <div>
-              <h1 class="forum-header mt-4" id="<%= topics[0].forum_id %>" class="forum-title text-center"><%- topics[0].icons %> <%= topics[0].name %></h1>
+          <div>
+            <div class='row d-flex justify-content-between'> 
+              <a href="/forums" class='col-4 pb-0 mb-1 my-auto' style='max-width: 200px;'></a> 
+              <h1 class="forum-header mt-4 col-4" id="<%= topics[0].forum_id %>" class="text-center"><%- topics[0].icons %> <%= topics[0].name %></h1>
+            <a href="/forums" class='btn col-4 text-center pb-0 mb-1 mr-4 my-auto' style='max-width: 200px;'><h4>View all forums</h4></a> 
+          </div>
               
               <!-- Displaying all topics -->
               <table class="table text-center">
@@ -64,7 +68,7 @@
                 <tbody>
                   <% for(var i=0; i<topics.length; i++){%>  
                   <tr>    
-                    <th><a href="/forums/<%= topics[i].forum_id %>/topics/<%= topics[i].topic_id %>/posts"><%= topics[i].topic %></a></th>
+                    <th><a href="/forums/<%= topics[i].forum_id %>/topics/<%= topics[i].topic_id %>/posts"><p style="font-size: large;"><%= topics[i].topic %></p></a></th>
                     <td><%= topics[i].username %></td>
                   </tr>
                   <% } %>

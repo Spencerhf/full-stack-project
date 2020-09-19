@@ -1,4 +1,5 @@
 const express = require('express');
+// const sendMail = require('./mail.js');
 const { body, check } = require('express-validator');
 const bcrypt = require('bcrypt');
 const promise = require('bluebird');
@@ -54,7 +55,19 @@ app.use(express.static(__dirname + '/web'));
 let userLoggedIn = false;
 
 
-
+//app post email
+app.post('/contact-us', (req, res) => {
+    const { subject, email, message} = req.body;
+    console.log('Data: ', req.body);
+    console.log(subject, email, message);
+    sendMail(email, subject, message, function(err, data){
+            if (err) {
+                res.status(500).json({ message: data, error: err});
+            } else {
+                res.json({ message: 'Email sent'});
+            }
+    });
+}); 
 
 
 

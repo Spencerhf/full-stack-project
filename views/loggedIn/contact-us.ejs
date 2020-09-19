@@ -40,9 +40,9 @@
             <div id="navbarNav" class="collapse navbar-collapse">
               <div class="mt-4 text-center flex-column navbar-nav">
                 <p class="rounded p-1" id="displayUsername"></p>
-                <a class="nav-link nav-item active mb-4 link-color" href="/forums">Home</a>
+                <a class="nav-link nav-item mb-4 link-color" href="/forums">Home</a>
                 <a class="nav-link nav-item mb-4 link-color" href="/about-us">About Us</a>
-                <a class="nav-link mb-4 nav-item link-color" href="/contact-us">Contact Us</a>
+                <a class="nav-link mb-4 nav-item active link-color" href="/contact-us">Contact Us</a>
                 <button href="/forums" id="login-out-btn" class="btn center mx-auto nav-item btn-lg">Log Out</button>
               </div>
             </div>
@@ -52,101 +52,105 @@
       <!-- The middle and right columns -->
       
 
-        <div class="col-12 col-lg-9">
+      <!-- The middle and right columns -->
+      
+
+      <div class="col-12 col-lg-9">
 
 
-          <!--Section: Contact v.2-->
-          <section class="mb-4">
+        <!--Section: Contact v.2-->
+        <section class="mb-4">
 
-          <!--Section heading-->
-          <h1 class="font-weight-bold text-center my-4">Contact us</h1>
-          <!--Section description-->
-          <p class="text-center w-responsive ml-4 mr-4 mb-5 p-4">Do you have any questions? Please do not hesitate to contact us directly. Our team will get back to you within a matter of hours to help you.</p>
+        <!--Section heading-->
+        <h1 class="font-weight-bold text-center my-4">Contact us</h1>
+        <!--Section description-->
+        <p class="text-center w-responsive ml-4 mr-4 mb-5 p-4">Do you have any questions? Please do not hesitate to contact us directly. Our team will get back to you within a matter of hours to help you.</p>
 
-          <div class="row">
+        <div class="row">
 
-          <!--Grid column-->
-          <div class="col-md-9 mb-md-0 mb-5">
-              <form id="contact-form" name="contact-form" action="mail.php" method="POST">
+        <!--Grid column-->
+        <div class="col-md-9 mb-md-0 mb-5">
+            <form id="contact-form" name="contact-form" action="mail.php" method="POST">
 
-          <!--Grid row-->
-          <div class="row">
+        <!--Grid row-->
+        <div class="row">
 
-          <!--Grid column-->
-        
-          <!--Grid column-->
+        <!--Grid column-->
+      
+        <!--Grid column-->
 
-          <!--Grid column-->
-          <div class="col-md-8">
-              <div class="md-form mb-3">
-                  <label for="email" class="">Your email</label>
-                  <input type="text" id="email" name="email" class="form-control aria-describedby="emailHelp" placeholder="Enter email">
-                  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                  
-              </div>
-          </div>
-          <!--Grid column-->
+        <!--Grid column-->
+        <div class="col-md-8">
+            <div class="md-form mb-3">
+                <label for="email" class="">Your email</label>
+                <input type="text" id="email" name="email" class="form-control aria-describedby="emailHelp" placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                
+            </div>
+        </div>
+        <!--Grid column-->
 
-          </div>
-          <!--Grid row-->
+        </div>
+        <!--Grid row-->
 
-          <!--Grid row-->
-          <div class="row">
-              <div class="col-md-12">
-                  <div class="md-form mb-3">
-                      <label for="subject" class="">Subject</label>
-                      <input type="text" id="subject" name="subject" class="form-control">
-                      
-                  </div>
-              </div>
-          </div>
-          <!--Grid row-->
+        <!--Grid row-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="md-form mb-3">
+                    <label for="subject" class="">Subject</label>
+                    <input type="text" id="subject" name="subject" class="form-control">
+                    
+                </div>
+            </div>
+        </div>
+        <!--Grid row-->
 
-          <!--Grid row-->
-          <div class="row">
+        <!--Grid row-->
+        <div class="row">
 
-              <!--Grid column-->
-              <div class="col-md-12">
+            <!--Grid column-->
+            <div class="col-md-12">
 
-                  <div class="md-form">
-                      <label for="message">Your message</label>
-                      <textarea type="text" id="message" name="message" rows="2" class="form-control md-textarea"></textarea>
-                      
-                  </div>
+                <div class="md-form">
+                    <label for="message">Your message</label>
+                    <textarea type="text" id="message" name="message" rows="2" class="form-control md-textarea"></textarea>
+                    
+                </div>
 
-              </div>
-          </div>
-          <!--Grid row-->
+            </div>
+        </div>
+        <!--Grid row-->
 
+    </form>
+
+    <div class="text-center text-md-left mt-3">
+        <input class="btn btn-lg" type="submit" id="submit" value="Send">
       </form>
+    </div>
+    <div class="status"></div>
+</div>
+<!--Grid column-->
 
-      <div class="text-center text-md-left mt-3">
-          <input class="btn btn-lg" type="submit" id="submit" value="Send">
-      </div>
-      <div class="status"></div>
-  </div>
-  <!--Grid column-->
+<!--Grid column-->
+<div class="col-md-3 text-center">
+    <ul class="list-unstyled mb-0">
+        <li><i class="fas fa-map-marker-alt fa-2x"></i>
+            <p>San Francisco, CA 94126, USA</p>
+        </li>
 
-  <!--Grid column-->
-  <div class="col-md-3 text-center">
-      <ul class="list-unstyled mb-0">
-          <li><i class="fas fa-map-marker-alt fa-2x"></i>
-              <p>San Francisco, CA 94126, USA</p>
-          </li>
-
-          <li><i class="fas fa-phone mt-4 fa-2x"></i>
-              <p>+ 719-266-2837</p>
-          </li>
-      </ul>
-  </div>
-  <!--Grid column-->
+        <li><i class="fas fa-phone mt-4 fa-2x"></i>
+            <p>+ 719-266-2837</p>
+        </li>
+    </ul>
+</div>
+<!--Grid column-->
 
 </div>
 
 </section>
-       </div>
-    </div>
+     </div>
+  </div>
 </div>
-<!-- <script src="script.js"></script> -->
+<script src="/scripts/contact-us.js"></script>
 </body>
 </html>
