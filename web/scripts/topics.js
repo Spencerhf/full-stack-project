@@ -15,16 +15,18 @@ $( document ).ready(function() {
     function createTopic() {
 
         let newTopic = document.getElementById('newTopic');
+        let topicBody = document.getElementById('topicBody');
         let userId = sessionStorage.getItem( 'userId' );
         var inputs = document.getElementsByTagName("h1");
         let forumId = inputs[0].id;
-        console.log(forumId);
+        createPost(forumId);
 
         document.getElementById('newTopicBtn').addEventListener('click', function() {
             
             $.post(`/forums/${forumId}/topics`, {
 
                 "topic": `${newTopic.value}`,
+                "newPost": `${topicBody.value}`,
                 "username_id": `${userId}`
 
             }, function(results) {
@@ -34,8 +36,18 @@ $( document ).ready(function() {
                 alert('Topic already exists');
             })
         })
-
     }
+
+    function createPost(forumId) {
+        $.get(`/forums/${forumId}/topics`, function(topics) {
+            console.log(topics);
+            let lastTopic = topics[topics.length-1];
+            console.log(lastTopic);
+        })
+
+        //$.post(`/forums/${forumId}/topics//posts`, )
+    }
+
     createTopic();
 
 })

@@ -69,6 +69,15 @@ function authenticationMiddleware(req, res, next) {
 }
 
 
+//Reset user boolean
+app.get('/', ( req, res ) => {
+
+    userLoggedIn = false;
+    res.redirect('/forums');
+
+})
+
+
 //Register New User
 
 app.post('/register', (req, res) => {
@@ -157,10 +166,20 @@ app.post('/forums/:forum/topics', authenticationMiddleware, [check('topic').esca
         db.query(
             `INSERT INTO topics (topic,forum_id,username_id,date_created,is_deleted)\
             VALUES\ 
-            ('${req.body.topic}',${forum_id},${req.body.username_id}, CURRENT_DATE, FALSE)\
+            ('${req.body.topic}',${forum_id},${req.body.username_id}, CURRENT_TIMESTAMP, FALSE)\
             RETURNING *`)
         .then(function (results) {
-            res.json(results);
+
+            if(req.body.newPost) {
+                db.query(`INSERT INTO posts (body, is_deleted, forum_id, topic_id, username_id,date_created)\
+                VALUES\ 
+                ('${req.body.newPost}', FALSE, ${forum_id}, ${results[0].topic_id}, ${req.body.username_id},CURRENT_TIMESTAMP)\
+                RETURNING *`).then(function(newPost) {
+                    res.json(newPost);
+                })
+            } else {
+                res.json(results);
+            }
         }).catch(e => {
             res.status(400).send("An error occurred.");
         });
@@ -168,7 +187,7 @@ app.post('/forums/:forum/topics', authenticationMiddleware, [check('topic').esca
 });
 
 
-//Create Comment
+//Create Post
 app.post('/forums/:forum/topics/:topic/posts', authenticationMiddleware, (req,res) => {
     let forum_id = req.params.forum;
     let topic_id = req.params.topic;
@@ -224,7 +243,9 @@ app.post('/forums/:forum/topics/:topic/posts/:post/replies', authenticationMiddl
 app.get('/', (req,res) => {
     db.query(
     `SELECT * FROM forum`).then (function(results) {
+
         let forums = results;
+
         if(userLoggedIn) {
             res.render('loggedIn/forums', {forums: forums}); 
         } else {
@@ -281,6 +302,7 @@ app.get('/forums/:forum/topics', (req,res) => {
         LEFT OUTER JOIN users ON topics.username_id = users.user_id\
         WHERE topics.forum_id = ${forum_id} AND forum.forum_id = ${forum_id}
         ORDER BY (topics.date_created)`
+
         
     ).then (function(results) {
         let topics = results;
