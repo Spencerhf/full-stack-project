@@ -5,7 +5,7 @@ $( document ).ready(function() {
 
         let user = sessionStorage.getItem( 'username' );
 
-        document.getElementById('displayUsername').innerHTML = user;
+        document.getElementById('displayUsername').innerHTML = "Hey, " + user;
 
     }
     displayUsername();

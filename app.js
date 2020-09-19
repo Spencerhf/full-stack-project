@@ -25,7 +25,7 @@ const config = {
     host: 'localhost',
     port: 5432,
     database: 'forum_project',
-    user: 'spencer'
+    user: 'zac-evans'
 };
 
 app.use(session({
@@ -237,9 +237,9 @@ app.post('/forums/:forum/topics/:topic/posts/:post/replies', authenticationMiddl
 app.get('/', (req,res) => {
     db.query(
     `SELECT * FROM forum`).then (function(results) {
-        console.log(results);
+
         let forums = results;
-        console.log(results);
+
         if(userLoggedIn) {
             res.render('loggedIn/forums', {forums: forums}); 
         } else {
@@ -257,10 +257,8 @@ app.get('/', (req,res) => {
 app.get('/forums', (req,res) => {
     db.query(
     `SELECT * FROM forum`).then (function(results) {
-        console.log(results);
         let forums = results;
-        console.log(results);
-        if(userLoggedIn) {
+        if(userLoggedIn) {          
             res.render('loggedIn/forums', {forums: forums}); 
         } else {
             res.render('loggedOut/forums', {forums: forums});
@@ -297,10 +295,10 @@ app.get('/forums/:forum/topics', (req,res) => {
         INNER JOIN topics ON topics.forum_id = forum.forum_id\
         LEFT OUTER JOIN users ON topics.username_id = users.user_id\
         WHERE topics.forum_id = ${forum_id} AND forum.forum_id = ${forum_id}
-        ORDER BY (topics.date_created) DESC`
+        ORDER BY (topics.date_created)`
+
         
     ).then (function(results) {
-        console.log(results);
         let topics = results;
         if(userLoggedIn) {
             if (topics[1]) {
@@ -354,7 +352,6 @@ app.get('/forums/:forum/topics/:topic/posts', (req,res) => {
         AND posts.topic_id = '${topic_id}'`
     ).then (function(results) {
         let posts = results;
-        console.log(posts.length);
         if(userLoggedIn) {
             res.render('loggedIn/comments', {posts: posts}); 
         } else {
@@ -427,6 +424,26 @@ app.get('/forums/:forum/topics/:topic/posts/:post/replies/:reply', (req,res) => 
         res.status(404).send("That reply does not exist.")
     });
 });
+
+//About Us
+app.get('/about-us', function (req,res) {
+        if(userLoggedIn) {
+                res.render('loggedIn/about-us')
+            } else {
+                res.render('loggedOut/about-us')
+            }
+        })
+    
+//About Us
+app.get('/contact-us', function (req,res) {
+    if(userLoggedIn) {
+            res.render('loggedIn/contact-us')
+        } else {
+            res.render('loggedOut/contact-us')
+        }
+    })    
+
+
 
 
 //Get Dashboard
