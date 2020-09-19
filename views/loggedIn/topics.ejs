@@ -17,11 +17,12 @@
     <script type="text/javascript" src="/scripts/topics.js"></script>
     <script src="https://kit.fontawesome.com/d00b451a0b.js" crossorigin="anonymous"></script>
 </head>
-<body>
+<body class="bg-light">
 
   <body>
  
     <div class="container-fluid">
+
       <div class="row vh-100" id="pageRow">
   
         <!-- The navigation bar -->
@@ -43,10 +44,14 @@
                   <a class="nav-link nav-item mb-4 link-color" href="/about-us">About Us</a>
                   <a class="nav-link mb-4 nav-item link-color" href="/contact-us">Contact Us</a>
                   <button href="/forums" id="login-out-btn" class="btn center mx-auto nav-item btn-lg">Log Out</button>
+
               </div>
             </div>
           </nav>
       </div>
+
+      
+
 
       <div id="topic-list" class="col-12 col-lg-9">
         
@@ -54,13 +59,13 @@
             <div>
               <h1 class="forum-header" id="<%= topics[0].forum_id %>" class="forum-title text-center"><%- topics[0].icons %> <%= topics[0].name %></h1>
     
-      
-      
-           <!-- Create a new topic -->
-              <form class="mx-auto mb-4" style="max-width: 300px;">
+              <% console.log(topics) %>
+              <!-- Create a new topic -->
+              <form class="mx-auto mb-4" style="max-width: 500px;">
                 <div class="form-group">
                   <label class="text-center">Don't see a topic for you? Go ahead and create one!</label>
-                  <input class="form-control" id="newTopic">
+                  <input class="mb-2 form-control" placeholder="Topic..." id="newTopic">
+                  <textarea class="w-100 form-control" placeholder="A question..." id="topicBody" rows="3"></textarea>
                 </div>
                 <button type="submit" id="newTopicBtn" class="btn btn-primary">create topic</button>
               </form>
@@ -80,6 +85,7 @@
                     <td><%= topics[i].username %></td>
                   </tr>
                   <% } %>
+                  <%  %>
                 </tbody>
               </table>
             </div>

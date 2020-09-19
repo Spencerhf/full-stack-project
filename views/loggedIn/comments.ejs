@@ -18,8 +18,7 @@
     <script src="https://kit.fontawesome.com/d00b451a0b.js" crossorigin="anonymous"></script>
 
 </head>
-<body>
-
+<body class="bg-light">
   <div class="container-fluid">
     <div class="row vh-100" id="pageRow">
 
@@ -60,6 +59,7 @@
                   <h4 class="card-title"><%= posts[i].username %></h4>
                   <h6 class="card-subtitle mb-2 text-muted"><%= posts[i].date_created %></h6>
                   <p class="card-text"><%= posts[i].body %></p>
+
               </div>
               </div>
               <% } %>
@@ -69,12 +69,8 @@
        
        
         <br>
-       
-          
+         
       </div>
-  </div>
-</div>
-
 
 </body>
 </html>
