@@ -1,4 +1,5 @@
 const express = require('express');
+const { body, check } = require('express-validator');
 const bcrypt = require('bcrypt');
 const promise = require('bluebird');
 const bodyParser = require('body-parser');
@@ -15,6 +16,7 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
+// sanitizer
 // pg-promise initialization options:
 const initOptions = {
     // Use a custom promise library, instead of the default ES6 Promise:
@@ -51,9 +53,14 @@ app.use(express.static(__dirname + '/web'));
 
 let userLoggedIn = false;
 
+
+
+
+
+
 function authenticationMiddleware(req, res, next) {
     if(userLoggedIn) {
-        console.log(userLoggedIn);
+        console.log("User logged in.");
         next();
     } else {
         console.log('User not authenticated');
@@ -149,7 +156,7 @@ app.post('/login', (req, res) => {
 
 
 //Create Topic
-app.post('/forums/:forum/topics', authenticationMiddleware, (req,res) => {
+app.post('/forums/:forum/topics', authenticationMiddleware, [check('topic').escape()],(req,res) => {
     let forum_id = req.params.forum;
     if ( req.body.topic === '' || req.body.topic === 'undefined' ) {
         res.send('Please enter a topic');
@@ -174,7 +181,6 @@ app.post('/forums/:forum/topics', authenticationMiddleware, (req,res) => {
                 res.json(results);
             }
         }).catch(e => {
-            console.log("Topic already exists");
             res.status(400).send("An error occurred.");
         });
     };
