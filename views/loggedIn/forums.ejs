@@ -54,8 +54,8 @@
          <!-- Forum area -->
     <div class="col-12 col-lg-9"> 
       <h1 class='text-center mt-4'>Welcome to TALK ABOUT IT.</h1>
-      <h4>A place where people can ask question or just talk about life.</h4>
-      <p class='text-center font-weight-bolder text-secondary' style="font-size: larger">A simple and clean message board utilizing html, css, javascript, jquery, node.js, postgresql, express.js, and ejs</p>   
+      <h4 class='text-center'>A place where people can ask questions or just talk about life.</h4>
+      <p class='text-center font-weight-bolder text-secondary' style="font-size: larger">Utilizing html, css, javascript, jquery, node.js, postgresql, express.js, and ejs</p>   
       <div id="forum-container" class="d-flex flex-row flex-wrap mx-auto" style="width: 90%;">
         <% for(var i=0; i<forums.length; i++){ %>
           <a href="/forums/<%= forums[i].forum_id %>/topics" id="<%= forums[i].forum_id %>" onclick="forumCardClicked(this.id)" class="card-link d-block m-3 mx-auto">

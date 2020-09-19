@@ -54,21 +54,21 @@
             
       <div class="flex-nowrap">
         <div>
-          <h1 class="forum-header" id="<%= topics[0].forum_id %>" class="forum-title text-center"><%- topics[0].icons %> <%= topics[0].name %></h1>
-          
-          <!-- Displaying all topics -->
-          <% console.log(topics[0].forum_id) %>
-          <h1 class="forum-header" id="<%= topics[0].forum_id %>" class="forum-title text-center"><%- topics[0].icons %> <%= topics[0].name %></h1>
+          <div class='row d-flex justify-content-between'> 
+            <a href="/forums" class='col-4 pb-0 mb-1 my-auto' style='max-width: 200px;'></a> 
+            <h1 class="forum-header mt-4 col-4" id="<%= topics[0].forum_id %>" class="text-center"><%- topics[0].icons %> <%= topics[0].name %></h1>
+          <a href="/forums" class='btn col-4 text-center pb-0 mb-1 mr-4 my-auto' style='max-width: 200px;'><h4>View all forums</h4></a> 
+        </div>
           <table class="table text-center">
           </table>
           <h2 class='mt-2 text-center'>There are no topics here... yet.</h2>
           <form class="mx-auto mb-4" style="max-width: 500px;">
             <div class="form-group">
-              <label class="text-center">Don't see a topic for you? Go ahead and create one!</label>
-              <input class="mb-2 form-control" id="newTopic">
-              <textarea class="w-100 form-control" id="topicBody" rows="3"></textarea>
+              <p class="text-center">Don't see a topic for you? Go ahead and create one!</p>
+              <input class="mb-2 form-control" placeholder="Topic..." id="newTopic">
+              <textarea class="w-100 form-control" placeholder="Say something..." id="topicBody" rows="3"></textarea>
             </div>
-            <button type="submit" id="newTopicBtn" class="btn btn-primary">create topic</button>
+            <button type="submit" id="newTopicBtn" class="btn float-right">Create topic</button>
           </form>
              
           </div>

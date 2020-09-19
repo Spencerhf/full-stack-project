@@ -10,6 +10,18 @@ $( document ).ready(function() {
     }
     displayUsername();
 
+    
+
+    function logOut() {
+        let btn = document.getElementById('log-out-btn');
+
+        btn.addEventListener('click', function() {
+            sessionStorage.removeItem('userId');
+            
+
+        })
+    }
+
 
     //Creating a new topic
     function createTopic() {
@@ -18,6 +30,7 @@ $( document ).ready(function() {
         let topicBody = document.getElementById('topicBody');
         let userId = sessionStorage.getItem( 'userId' );
         var inputs = document.getElementsByTagName("h1");
+        console.log(inputs)
         let forumId = inputs[0].id;
         createPost(forumId);
 
@@ -40,9 +53,7 @@ $( document ).ready(function() {
 
     function createPost(forumId) {
         $.get(`/forums/${forumId}/topics`, function(topics) {
-            console.log(topics);
             let lastTopic = topics[topics.length-1];
-            console.log(lastTopic);
         })
 
         //$.post(`/forums/${forumId}/topics//posts`, )
